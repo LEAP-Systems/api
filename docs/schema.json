@@ -1,0 +1,94 @@
+{
+  "client": {
+    "id": 1,
+    "name": "Christian",
+    "sessions": [
+      "jljfkdljsfkld",
+      "dasbyduisadvu",
+      "kldsjdaidoahd",
+      "jljfkdljsfkld",
+      "andsoadnajkdn",
+      "oapalmlsmalkl"
+    ]
+  },
+  "session": {
+    "id": "dsajdksbadjba",
+    "calibrations": [
+      "jljfkdljsfkld",
+      "dasbyduisadvu",
+      "kldsjdaidoahd",
+      "jljfkdljsfkld"
+    ],
+    "reads": [
+      "jljfkdljsfkld",
+      "dasbyduisadvu",
+      "kldsjdaidoahd",
+      "jljfkdljsfkld",
+      "andsoadnajkdn",
+      "jljfkdljsfkld",
+      "dasbyduisadvu",
+      "kldsjdaidoahd",
+      "jljfkdljsfkld",
+      "andsoadnajkdn",
+      "oapalmlsmalkl",
+      "oapalmlsmalkl"
+    ]
+  },
+  "capture": {
+    "id": "jljfkdljsfkld",
+    "path": "/path/to/file.png",
+    "threshold": null,
+    "gaussian_blur": null,
+    "erosion": null,
+    "dialation": null,
+    "boxes": [
+      {
+        "tl_x": 10,
+        "tl_y": 40,
+        "width": 23,
+        "height": 43
+      },
+      {
+        "tl_x": 50,
+        "tl_y": 50,
+        "width": 46,
+        "height": 54
+      }
+    ],
+    "apexes": [
+      {
+        "init": {
+          "amplitude": 250,
+          "sigma_x": 10,
+          "sigma_y": 10,
+          "mu_x": 230,
+          "mu_y": 230
+        },
+        "opt": {
+          "amplitude": 200,
+          "sigma_x": 8.2,
+          "sigma_y": 7.6,
+          "mu_x": 234,
+          "mu_y": 243
+        }
+      },
+      {
+        "init": {
+          "amplitude": 250,
+          "sigma_x": 10,
+          "sigma_y": 10,
+          "mu_x": 230,
+          "mu_y": 230
+        },
+        "opt": {
+          "amplitude": 200,
+          "sigma_x": 8.2,
+          "sigma_y": 7.6,
+          "mu_x": 234,
+          "mu_y": 243
+        }
+      }
+    ]
+  }
+  
+}
