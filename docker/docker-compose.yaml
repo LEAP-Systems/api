@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  leap-db:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    volumes:
+      - mongodb:/data/db
+    networks:
+      - db
+  leap-api:
+    container_name: leap-api
+    build:
+      context: ../ 
+      dockerfile: docker/api/Dockerfile
+    environment:
+      MONGO_USER: root
+      MONGO_PASS: rootpassword
+      MONGO_PORT: 27017
+      MONGO_HOST: mongodb
+    depends_on:
+      - leap-db
+    networks:
+      - db
+
+volumes:
+  mongodb:
+
+networks:
+  db:
+    driver: bridge
