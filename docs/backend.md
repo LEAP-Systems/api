@@ -26,3 +26,26 @@ Computationally expensive and heavy processing libraries remain on the server si
    4. run through trained ecp network
    5. apply spatial codec
    6. read data
+
+
+## Shortcut Methodology (Insecure)
+1. Calibration
+   1. image aquisition
+   2. post to backend (/v1/images/ -d {'calibration': true})
+   3. evaluate calibration completion -> pre-ECP
+   4. return notification to client on calibration pass/fail
+   5. if fail new image aquisition
+   8. post to backend (/v1/images/ -d {'calibration': true})
+   9. backend applies superposition to first image
+   10. evaluate calibration completion (check for n number of apex/box detections)
+   11. evaluate ECP engine and save results to db session collection
+   12. return the results of ecp to the client
+   13. client applies spatial codec and decodes the packet
+   14. Generates APR key and sends to transmitter
+2. Frame reads
+   1. image acquisition
+   2. subtract the image from the surface fit. (numpy only operations)
+   3. compute the bright points
+   4. run through trained ecp network
+   5. apply spatial codec
+   6. read data
