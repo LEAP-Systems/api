@@ -1,6 +1,6 @@
+import json
 import requests
 from base64 import b64encode
-import json
 
 BASE_URL = 'http://127.0.0.1:5000/'
 
