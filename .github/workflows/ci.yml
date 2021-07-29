@@ -1,0 +1,22 @@
+---
+name: ci
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    type: [opened, synchronized, re-opened]
+    branches:
+      - master 
+
+jobs:
+  lint:
+    name: lint suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v2
+      - name: Install flake8
+        run: python3 -m pip install flake8
+      - name: Run lint directive
+        run: flake8 .
