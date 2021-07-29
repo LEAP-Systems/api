@@ -14,3 +14,6 @@ class Config:
 
     # db conf
     MONGO_URI = os.environ.get('MONGO_URI')
+
+    # storage path config
+    STORAGE_PATH = os.environ.get('STORAGE_PATH')
