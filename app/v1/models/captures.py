@@ -2,7 +2,6 @@ import mongoengine as me
 from datetime import datetime
 from flask_restx import fields
 from typing import Any, Dict
-from app import db
 
 
 class Capture(me.Document):

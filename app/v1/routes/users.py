@@ -1,5 +1,4 @@
 from flask_restful import Resource
-from flask import g, current_app
 
 
 class Users(Resource):
