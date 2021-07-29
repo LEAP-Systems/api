@@ -1,26 +1,35 @@
 # -*- coding: utf-8 -*-
 import base64
+import uuid
 from flask import current_app as app
+from flask import request, jsonify, make_response
 from flask_restx import Namespace, Resource
-from app import db
 from app.v1.models.captures import Capture
 
 # define namespace
-api = Namespace('images', description='CRUD endpoint for images')
-image_schema = api.model('Captures', Capture.api_model())
+api = Namespace('captures', description='CRUD endpoint for captures')
+image_schema = api.model('Capture', Capture.post_model())
 
 
-class Image(Resource):
+@api.route('')
+class Captures(Resource):
     def get(self, id: int): ...
 
     @api.expect(image_schema, validate=True)
     def post(self):
-        img = args["data"]
-        ib = base64.b64decode(img)
-        with open('samples/server.png', 'wb') as open_file:
-            open_file.write(ib)
-        app.logger.info("wrote image to fs")
-        return "Created", 201
+        # process payload args
+        app.logger.info("Received payload: %s", request.get_json())
+        # decode raw image data
+        # ib = base64.b64decode(img)
+        # # save png to disk (uuid for file collision avoidance)
+        # img_path = "{}/{}.png".format(app.config.get("STORAGE_PATH"), uuid.uuid4().hex)
+        # with open(img_path, 'wb') as open_file:
+        #     open_file.write(ib)
+        # app.logger.info("Successfully wrote capture to file system as %s", img_path)
+        # write capture resource to mongo
+
+        # kickstart async processing request
+        return make_response(jsonify(message="Accepted"), 202)
 
     def put(self, id: int): ...
 
