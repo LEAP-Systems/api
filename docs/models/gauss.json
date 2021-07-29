@@ -1,0 +1,45 @@
+{
+	"id": "dskladnasdknsldnal",
+	"capture_id": "49uoujndklsand",
+	"created_at": "2021-07-11",
+	"updated_at": "2021-07-11",
+	"elapsed": 23.4,
+	"threshold": null,
+	"gaussian_blur": null,
+	"erosion_iterations": null,
+	"dialation_iterations": null,
+	"apexes": [
+		{
+      "init": {
+        "amplitude": 250,
+        "sigma_x": 10,
+        "sigma_y": 10,
+        "mu_x": 230,
+        "mu_y": 230
+      },
+      "opt": {
+        "amplitude": 200,
+        "sigma_x": 8.2,
+        "sigma_y": 7.6,
+        "mu_x": 234,
+        "mu_y": 243
+      }
+		},
+		{
+      "init": {
+        "amplitude": 250,
+        "sigma_x": 10,
+        "sigma_y": 10,
+        "mu_x": 230,
+        "mu_y": 230
+      },
+      "opt": {
+        "amplitude": 200,
+        "sigma_x": 8.2,
+        "sigma_y": 7.6,
+        "mu_x": 234,
+        "mu_y": 243
+      }
+		}
+	]
+}

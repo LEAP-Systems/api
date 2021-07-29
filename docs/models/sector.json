@@ -1,0 +1,25 @@
+{
+  "id": "dskladnasdknsldnal",
+  "capture_id": "49uoujndklsand",
+  "created_at": "2021-07-11",
+  "updated_at": "2021-07-11",
+  "elapsed": 2.34,
+  "threshold": null,
+  "gaussian_blur": null,
+  "erosion_iterations": null,
+  "dialation_iterations": null,
+  "boxes": [
+    {
+      "tl_x": 10,
+      "tl_y": 40,
+      "width": 23,
+      "height": 43
+    },
+    {
+      "tl_x": 50,
+      "tl_y": 50,
+      "width": 46,
+      "height": 54
+    }
+  ]
+}
