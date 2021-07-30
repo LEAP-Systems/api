@@ -16,3 +16,7 @@ run: config ## Run development environment
 .PHONY: config
 config: ## Run docker compose config validation
 	@./scripts/config.sh
+
+.PHONY: clean
+clean: ## Clean docker environment
+	@./scripts/clean.sh
