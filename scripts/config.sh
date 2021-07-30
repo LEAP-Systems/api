@@ -9,9 +9,9 @@ handler () {
     printf "%b" "${FAIL} ✗ ${NC} ${0##*/} failed on line $2 with exit status $1\n"
     exit $1
 }
-
-printf "%b" "${OKB}Checking for .env file in $DOCKER_ROOT/${NC}\n"
-if [ ! -f ./"$DOCKER_ROOT"/.env ]; then
+DIFF=
+printf "%b" "${OKB}Checking for .env diff in $DOCKER_ROOT/${NC}\n"
+if [ ! -f ./"$DOCKER_ROOT"/.env ] || [ $(diff ".env" "./$DOCKER_ROOT/.env") ] ; then
     cp .env ./"$DOCKER_ROOT"/.
     printf "%b" "${OKG} ✓ ${NC} copied .env file to "$DOCKER_ROOT"/\n"
 else
