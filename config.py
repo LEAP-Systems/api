@@ -14,6 +14,7 @@ class Config:
 
     # db conf
     MONGODB_SETTINGS = {
+        'db': 'admin',
         'port': int(os.environ['MONGO_PORT']),
         'host': os.environ['MONGO_HOST'],
         'username': os.environ['MONGO_USER'],
