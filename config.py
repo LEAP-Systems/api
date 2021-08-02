@@ -13,7 +13,13 @@ class Config:
     DEBUG = os.environ.get('FLASK_DEBUG')
 
     # db conf
-    MONGO_URI = os.environ.get('MONGO_URI')
+    MONGODB_SETTINGS = {
+        'port': int(os.environ['MONGO_PORT']),
+        'host': os.environ['MONGO_HOST'],
+        'username':os.environ['MONGO_USER'],
+        'password':os.environ['MONGO_PASS']
+    }
+    # MONGO_URI = os.environ.get('MONGO_URI')
 
     # storage path config
     STORAGE_PATH = os.environ.get('STORAGE_PATH')
