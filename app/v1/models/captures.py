@@ -1,8 +1,14 @@
 import mongoengine as me
 from datetime import datetime
-from flask_restx import fields
 from typing import Any, Dict
+from flask_restx.reqparse import RequestParser
+from werkzeug.datastructures import FileStorage
 
+
+class CaptureModel:
+    def __init__(self, model:Dict[str, Any]) -> None:
+        self.algorithm:str = model["algorithm"]
+        self.file:FileStorage = model["file"]
 
 class Capture(me.Document):
 
@@ -20,11 +26,18 @@ class Capture(me.Document):
         return super().save(*args, **kwargs)
 
     @staticmethod
-    def post_model() -> Dict[str, Any]:
-        return {
-            'data': fields.String(required=True, description="Base64 encoded capture data"),
-            'algorithm': fields.String(
-                required=True,
-                description="Algorithm selection: sector | gauss | all"
-            )
-        }
+    def post_model(model:RequestParser) -> RequestParser:
+        model.add_argument(
+            "file",
+            type=FileStorage,
+            location='files',
+            help="Capture for processing"
+        )
+        model.add_argument(
+            "algorithm",
+            type=str,
+            choices=('sector', 'gauss', 'all'),
+            location='args',
+            help="Algorithm selection: sector | gauss | all"
+        )
+        return model
