@@ -20,9 +20,6 @@ class Capture(me.Document):
         return super().save(*args, **kwargs)
 
     @staticmethod
-    def commit(): ...
-
-    @staticmethod
     def post_model() -> Dict[str, Any]:
         return {
             'data': fields.String(required=True, description="Base64 encoded capture data"),
