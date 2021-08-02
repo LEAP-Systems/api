@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import base64
+from typing import Dict
 import uuid
 from flask import current_app as app
 from flask import request, jsonify, make_response
 from flask_restx import Namespace, Resource
 from app.v1.models.captures import Capture
 
-# define namespace
+# define namespaces
 api = Namespace('captures', description='CRUD endpoint for captures')
 image_schema = api.model('Capture', Capture.post_model())
 
@@ -17,10 +18,10 @@ class Captures(Resource):
 
     @api.expect(image_schema, validate=True)
     def post(self):
-        payload: dict = request.get_json()
+        payload: Dict[str,str] = request.get_json()
         # process payload args
         app.logger.info("Received payload: %s", payload)
-        img = payload.get("data")
+        img = payload["data"]
         # decode raw image data
         ib = base64.b64decode(img)
         # save png to disk (uuid for file collision avoidance)
@@ -29,9 +30,9 @@ class Captures(Resource):
             open_file.write(ib)
         app.logger.info("Successfully wrote capture to file system as %s", img_path)
         # write capture resource to mongo
-
+        capture = Capture({'path': img_path}).save()
         # kickstart async processing request
-        return make_response(jsonify(message="Accepted"), 202)
+        return make_response(jsonify(capture), 202)
 
     def put(self, id: int): ...
 
