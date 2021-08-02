@@ -16,8 +16,8 @@ class Config:
     MONGODB_SETTINGS = {
         'port': int(os.environ['MONGO_PORT']),
         'host': os.environ['MONGO_HOST'],
-        'username':os.environ['MONGO_USER'],
-        'password':os.environ['MONGO_PASS']
+        'username': os.environ['MONGO_USER'],
+        'password': os.environ['MONGO_PASS']
     }
     # MONGO_URI = os.environ.get('MONGO_URI')
 
