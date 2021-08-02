@@ -13,7 +13,7 @@ class CaptureModel:
 
 class Capture(me.Document):
 
-    path = me.StringField()
+    path = me.StringField(primary_key=True)
     created_at = me.DateTimeField(required=True)
     updated_at = me.DateTimeField(required=True, default=datetime.now())
 
