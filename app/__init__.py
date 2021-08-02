@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 from flask import Flask
 from flask_restx import Api
 from flask.blueprints import Blueprint
@@ -21,6 +22,8 @@ def init_app():
         description="Image Processing Backend",
         contact_email="christian@leapsystems.online"
     )
+    # create storage directory
+    os.makedirs(app.config['STORAGE_PATH'], exist_ok=True)
     # Initialize Plugins
     db.init_app(app)
     with app.app_context():
