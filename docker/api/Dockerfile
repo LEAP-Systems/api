@@ -3,7 +3,7 @@ FROM ubuntu:latest
 
 LABEL author="Christian Sargusingh (cSDes1gn)" 
 
-EXPOSE ${FLASK_PORT} 
+EXPOSE ${FLASK_PORT}
 
 WORKDIR /srv
 
@@ -15,4 +15,4 @@ COPY . .
 
 RUN python3 -m pip install -r requirements.txt
 
-CMD [ "flask", "run" , "-h", "0.0.0.0", "-p", "5000"]
+CMD [ "flask", "run" , "-h", "0.0.0.0", "-p", "${FLASK_PORT}"]
