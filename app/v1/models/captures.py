@@ -6,9 +6,10 @@ from werkzeug.datastructures import FileStorage
 
 
 class CaptureModel:
-    def __init__(self, model:Dict[str, Any]) -> None:
-        self.algorithm:str = model["algorithm"]
-        self.file:FileStorage = model["file"]
+    def __init__(self, model: Dict[str, Any]) -> None:
+        self.algorithm: str = model["algorithm"]
+        self.file: FileStorage = model["file"]
+
 
 class Capture(me.Document):
 
@@ -26,7 +27,7 @@ class Capture(me.Document):
         return super().save(*args, **kwargs)
 
     @staticmethod
-    def post_model(model:RequestParser) -> RequestParser:
+    def post_model(model: RequestParser) -> RequestParser:
         model.add_argument(
             "file",
             type=FileStorage,
@@ -36,8 +37,8 @@ class Capture(me.Document):
         model.add_argument(
             "algorithm",
             type=str,
-            choices=('sector', 'gauss', 'all'),
+            choices=('sector', 'fit', 'all'),
             location='args',
-            help="Algorithm selection: sector | gauss | all"
+            help="Algorithm"
         )
         return model
