@@ -1,36 +1,39 @@
 # -*- coding: utf-8 -*-
-import base64
-from typing import Dict
 import uuid
 from flask import current_app as app
-from flask import request, jsonify, make_response
+from flask import jsonify, make_response
 from flask_restx import Namespace, Resource
-from app.v1.models.captures import Capture
+from app.v1.models.captures import Capture, CaptureModel
+
 
 # define namespaces
 api = Namespace('captures', description='CRUD endpoint for captures')
-image_schema = api.model('Capture', Capture.post_model())
-
+post_model = Capture.post_model(api.parser())
 
 @api.route('')
 class Captures(Resource):
     def get(self, id: int): ...
 
-    @api.expect(image_schema, validate=True)
+    @api.expect(post_model, validate=True)
     def post(self):
-        payload: Dict[str,str] = request.get_json()
         # process payload args
-        app.logger.info("Received payload: %s", payload)
-        img = payload["data"]
-        # decode raw image data
-        ib = base64.b64decode(img)
+        args = post_model.parse_args(strict=True)
+        app.logger.debug("args: %s", args)
+        model = CaptureModel(args)
+        algorithm = model.algorithm
+        img = model.file
+        app.logger.debug("Received upload: %s", img)
+        app.logger.debug("Running processing with algorithm: %s", algorithm)
         # save png to disk (uuid for file collision avoidance)
         img_path = "{}/{}.png".format(app.config.get("STORAGE_PATH"), uuid.uuid4().hex)
-        with open(img_path, 'wb') as open_file:
-            open_file.write(ib)
+        app.logger.debug("Constucted image path: %s", img_path)
+        img.save(img_path)
         app.logger.info("Successfully wrote capture to file system as %s", img_path)
         # write capture resource to mongo
-        capture = Capture({'path': img_path}).save()
+        document = {
+            'path': img_path
+        }
+        capture = Capture(**document).save()
         # kickstart async processing request
         return make_response(jsonify(capture), 202)
 
