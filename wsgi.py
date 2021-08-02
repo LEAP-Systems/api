@@ -11,11 +11,12 @@ def resource_not_found(err):
 
 @app.errorhandler(Exception)
 def internal_error(err):
+    message = [str(x) for x in err.args]
     response = {
         'success': False,
         'error': {
-            'type': 'UncaughtException',
-            'message': err
+            'type': err.__class__.__name__,
+            'message': message
         }
     }
     return jsonify(response), 500
