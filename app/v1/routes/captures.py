@@ -13,11 +13,12 @@ from flask import current_app as app
 from flask import jsonify, make_response
 from flask_restx import Namespace, Resource
 from mongoengine.errors import ValidationError
-from app.v1.models.captures import Capture, CaptureModel
+from werkzeug.datastructures import FileStorage
+from app.v1.models.capture import Capture
 
 
 # define namespaces
-api = Namespace('capture', description='CRUD endpoint for captures')
+api = Namespace('capture', description='Endpoint for uploading and deleting raw captures')
 post_model = Capture.post_model(api.parser())
 capture_marshal = api.model('Capture', Capture.api_model())
 
@@ -33,18 +34,16 @@ class CapturesList(Resource):
         captures_list = Capture.objects()  # type: ignore
         return list(captures_list)
 
-    @api.marshal_with(capture_marshal, code=202)
+    @api.marshal_with(capture_marshal, code=201)
     @api.expect(post_model, validate=True)
     def post(self):
         """
-        Upload new image capture and asynchronously start processing execution
+        Upload new image capture
         """
         # process payload args
         args = post_model.parse_args(strict=True)
         app.logger.debug("args: %s", args)
-        model = CaptureModel(args)
-        algorithm = model.algorithm
-        img = model.file
+        img: FileStorage = args["file"]
         app.logger.debug("Received upload: %s", img)
         # save png to disk (uuid for file collision avoidance)
         img_path = "{}/{}.png".format(app.config.get("STORAGE_PATH"), uuid.uuid4().hex)
@@ -57,9 +56,6 @@ class CapturesList(Resource):
         except ValidationError as exc:
             app.logger.exception("Capture validation failed: %s", exc)
             return make_response(jsonify(message="Invalid types for models {}".format(exc))), 400
-        # kickstart async processing request
-        app.logger.debug("Running processing with algorithm: %s", algorithm)
-        # return response
         return capture
 
 
