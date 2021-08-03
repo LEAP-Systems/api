@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import uuid
 from flask import current_app as app
 from flask import jsonify, make_response
@@ -10,18 +11,21 @@ from app.v1.models.captures import Capture, CaptureModel
 # define namespaces
 api = Namespace('capture', description='CRUD endpoint for captures')
 post_model = Capture.post_model(api.parser())
+capture_marshal = api.model('Capture', Capture.api_model())
 
 
 @api.route('')
 class CapturesList(Resource):
 
+    @api.marshal_with(capture_marshal, as_list=True, code=200)
     def get(self):
         """
         Get list of captures
         """
-        captures_list = Capture.objects  # type: ignore
-        return make_response(jsonify(captures_list), 200)
+        captures_list = Capture.objects()  # type: ignore
+        return list(captures_list)
 
+    @api.marshal_with(capture_marshal, code=202)
     @api.expect(post_model, validate=True)
     def post(self):
         """
@@ -48,22 +52,25 @@ class CapturesList(Resource):
         # kickstart async processing request
         app.logger.debug("Running processing with algorithm: %s", algorithm)
         # return response
-        return make_response(jsonify(capture), 202)
+        return capture
 
 
 @api.route('/<string:id>')
 class Captures(Resource):
 
+    @api.marshal_with(capture_marshal, code=200)
     def get(self, id: str):
         """
         Get a single capture
         """
         capture = Capture.objects.get(id=id)  # type: ignore
-        return make_response(jsonify(capture), 200)
+        return capture
 
     def delete(self, id: str):
         """
         Delete a single capture
         """
-        Capture.objects.get(id=id).delete()  # type: ignore
-        return make_response(jsonify(message="deleted"), 204)
+        capture = Capture.objects.get(id=id)  # type: ignore
+        os.remove(capture.path)
+        capture.delete()
+        return '', 204
