@@ -1,4 +1,12 @@
-from enum import unique
+# -*- coding: utf-8 -*-
+"""
+Capture Models
+===============
+Modified: 2021-07
+
+Copyright © 2021 LEAP. All Rights Reserved.
+"""
+
 import mongoengine as me
 from datetime import datetime
 from typing import Any, Dict
