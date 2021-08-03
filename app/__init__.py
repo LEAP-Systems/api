@@ -29,7 +29,9 @@ def init_app():
     with app.app_context():
         # Include our Routes
         from app.v1.routes.captures import api as captures
+        from app.v1.routes.models import api as models
         app.register_blueprint(bp)
         # add resource endpoints
         api.add_namespace(captures)
+        api.add_namespace(models)
         return app
