@@ -8,6 +8,7 @@ Modified: 2021-07
 Post processing, cube calibration, data-harvesting and deep learning server.
 
 ## Quickstart
+Run the development docker compose stack:
 ```bash
-flask run
+make run
 ```
