@@ -1,3 +1,4 @@
+from enum import unique
 import mongoengine as me
 from datetime import datetime
 from typing import Any, Dict
@@ -13,7 +14,7 @@ class CaptureModel:
 
 class Capture(me.Document):
 
-    path = me.StringField(primary_key=True)
+    path = me.StringField(unique=True)
     created_at = me.DateTimeField(required=True)
     updated_at = me.DateTimeField(required=True, default=datetime.now())
 
