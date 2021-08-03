@@ -9,6 +9,17 @@ app = init_app()
 def resource_not_found(err):
     return jsonify(error=str(err)), 404
 
+@app.errorhandler(Exception)
+def internal_error(err):
+    message = [str(x) for x in err.args]
+    response = {
+        'success': False,
+        'error': {
+            'type': err.__class__.__name__,
+            'message': message
+        }
+    }
+    return jsonify(response), 500
 
 @app.route("/")
 def redirect_to_latest_api_version():

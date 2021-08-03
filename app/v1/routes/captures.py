@@ -1,39 +1,84 @@
 # -*- coding: utf-8 -*-
-import base64
+"""
+Captures Routes
+===============
+Modified: 2021-07
+
+Copyright © 2021 LEAP. All Rights Reserved.
+"""
+
+import os
 import uuid
 from flask import current_app as app
-from flask import request, jsonify, make_response
+from flask import jsonify, make_response
 from flask_restx import Namespace, Resource
-from app.v1.models.captures import Capture
+from mongoengine.errors import ValidationError
+from app.v1.models.captures import Capture, CaptureModel
 
-# define namespace
-api = Namespace('captures', description='CRUD endpoint for captures')
-image_schema = api.model('Capture', Capture.post_model())
+
+# define namespaces
+api = Namespace('capture', description='CRUD endpoint for captures')
+post_model = Capture.post_model(api.parser())
+capture_marshal = api.model('Capture', Capture.api_model())
 
 
 @api.route('')
-class Captures(Resource):
-    def get(self, id: int): ...
+class CapturesList(Resource):
 
-    @api.expect(image_schema, validate=True)
+    @api.marshal_with(capture_marshal, as_list=True, code=200)
+    def get(self):
+        """
+        Get list of captures
+        """
+        captures_list = Capture.objects()  # type: ignore
+        return list(captures_list)
+
+    @api.marshal_with(capture_marshal, code=202)
+    @api.expect(post_model, validate=True)
     def post(self):
-        payload: dict = request.get_json()
+        """
+        Upload new image capture and asynchronously start processing execution
+        """
         # process payload args
-        app.logger.info("Received payload: %s", payload)
-        img = payload.get("data")
-        # decode raw image data
-        ib = base64.b64decode(img)
+        args = post_model.parse_args(strict=True)
+        app.logger.debug("args: %s", args)
+        model = CaptureModel(args)
+        algorithm = model.algorithm
+        img = model.file
+        app.logger.debug("Received upload: %s", img)
         # save png to disk (uuid for file collision avoidance)
         img_path = "{}/{}.png".format(app.config.get("STORAGE_PATH"), uuid.uuid4().hex)
-        with open(img_path, 'wb') as open_file:
-            open_file.write(ib)
+        app.logger.debug("Constucted image path: %s", img_path)
+        img.save(img_path)
         app.logger.info("Successfully wrote capture to file system as %s", img_path)
-        # write capture resource to mongo
-
+        capture = Capture(path=img_path)
+        try:
+            capture.save()
+        except ValidationError as exc:
+            app.logger.exception("Capture validation failed: %s", exc)
+            return make_response(jsonify(message="Invalid types for models {}".format(exc))), 400
         # kickstart async processing request
-        return make_response(jsonify(message="Accepted"), 202)
+        app.logger.debug("Running processing with algorithm: %s", algorithm)
+        # return response
+        return capture
 
-    def put(self, id: int): ...
 
-    def delete(self, id: int):
+@api.route('/<string:id>')
+class Captures(Resource):
+
+    @api.marshal_with(capture_marshal, code=200)
+    def get(self, id: str):
+        """
+        Get a single capture
+        """
+        capture = Capture.objects.get(id=id)  # type: ignore
+        return capture
+
+    def delete(self, id: str):
+        """
+        Delete a single capture
+        """
+        capture = Capture.objects.get(id=id)  # type: ignore
+        os.remove(capture.path)
+        capture.delete()
         return '', 204
