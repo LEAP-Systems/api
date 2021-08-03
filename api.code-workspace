@@ -1,0 +1,48 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "extensions": {
+    "recommendations": [
+      "yzhang.markdown-all-in-one",
+      "ms-python.python",
+      "visualstudioexptteam.vscodeintellicode",
+      "eamodio.gitlens",
+      "ms-python.vscode-pylance",
+      "njpwerner.autodocstring",
+      "kevinglasson.cornflakes-linter"
+    ]
+  },
+  "settings": {
+    "python.formatting.provider": "autopep8",
+    "python.formatting.autopep8Args": [
+      "--ignore=E701",
+      "--max-line-length",
+      "100"
+    ],
+    "autoDocstring.docstringFormat": "docblockr",
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.autoImportCompletions": true,
+    "python.linting.enabled": true,	
+    "python.linting.lintOnSave": true,
+    "[python]": {
+      "gitlens.codeLens.symbolScopes": [
+        "!Module"
+      ],
+      "editor.wordBasedSuggestions": false,
+      "editor.formatOnSave": true,
+      "editor.rulers": [100],
+      "editor.wordWrap": "on"
+    },
+    "python.pythonPath": "/opt/homebrew/bin/python3",
+    "editor.tabSize": 4,
+    "editor.cursorStyle": "line",
+    "editor.insertSpaces": false,
+    "editor.lineNumbers": "on",
+    "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
+    "editor.wordWrap": "off",
+    "redhat.telemetry.enabled": false,
+  }
+}
