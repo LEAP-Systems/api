@@ -21,6 +21,7 @@ class Config:
         'password': os.environ['MONGO_PASS']
     }
     # MONGO_URI = os.environ.get('MONGO_URI')
+    RESTX_MASK_SWAGGER = False
 
     # storage path config
     STORAGE_PATH = os.environ.get('STORAGE_PATH')
