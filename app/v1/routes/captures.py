@@ -4,7 +4,6 @@ from flask import current_app as app
 from flask import jsonify, make_response
 from flask_restx import Namespace, Resource
 from mongoengine.errors import ValidationError
-from app import db
 from app.v1.models.captures import Capture, CaptureModel
 
 
@@ -14,12 +13,20 @@ post_model = Capture.post_model(api.parser())
 
 
 @api.route('')
-class Captures(Resource):
+class CapturesList(Resource):
+
     def get(self):
-        return make_response(jsonify(Capture.objects().to_json()), 200)  # type: ignore
+        """
+        Get list of captures
+        """
+        captures_list = Capture.objects  # type: ignore
+        return make_response(jsonify(captures_list), 200)
 
     @api.expect(post_model, validate=True)
     def post(self):
+        """
+        Upload new image capture and asynchronously start processing execution
+        """
         # process payload args
         args = post_model.parse_args(strict=True)
         app.logger.debug("args: %s", args)
@@ -27,7 +34,6 @@ class Captures(Resource):
         algorithm = model.algorithm
         img = model.file
         app.logger.debug("Received upload: %s", img)
-        app.logger.debug("Running processing with algorithm: %s", algorithm)
         # save png to disk (uuid for file collision avoidance)
         img_path = "{}/{}.png".format(app.config.get("STORAGE_PATH"), uuid.uuid4().hex)
         app.logger.debug("Constucted image path: %s", img_path)
@@ -40,9 +46,24 @@ class Captures(Resource):
             app.logger.exception("Capture validation failed: %s", exc)
             return make_response(jsonify(message="Invalid types for models {}".format(exc))), 400
         # kickstart async processing request
+        app.logger.debug("Running processing with algorithm: %s", algorithm)
+        # return response
         return make_response(jsonify(capture), 202)
 
-    def put(self, id: int): ...
 
-    def delete(self, id: int):
-        return '', 204
+@api.route('/<string:id>')
+class Captures(Resource):
+
+    def get(self, id: str):
+        """
+        Get a single capture
+        """
+        capture = Capture.objects.get(id=id)  # type: ignore
+        return make_response(jsonify(capture), 200)
+
+    def delete(self, id: str):
+        """
+        Delete a single capture
+        """
+        Capture.objects.get(id=id).delete()  # type: ignore
+        return make_response(jsonify(message="deleted"), 204)
