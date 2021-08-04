@@ -15,24 +15,19 @@ from flask.json import jsonify
 from mongoengine.errors import ValidationError
 from PIL import Image
 from flask import current_app as app
-from flask_restx import Namespace, Resource
+from flask_restx import Resource
 from app.v1.functions import fit
 from app.v1.models.model import Model
 from app.v1.models.capture import Capture
 from app.v1.models.processing import Erosion, Dialation, GaussianBlur, Threshold
 from app.v1.models.apex import Apex, GaussianCurve
-
-
-# define namespaces
-api = Namespace('model', description='gaussian curve fitting models')
-post_model = Model.post_model(api.parser())
-model_marshal = api.model('Model', Model.api_model())
+from app.v1.namespaces.model import api, model_model, post_model
 
 
 @api.route('')
 class ModelsList(Resource):
 
-    @api.marshal_with(model_marshal, code=201)
+    @api.marshal_with(model_model, code=201)
     @api.expect(post_model, validate=True)
     def post(self):
         args = post_model.parse_args(strict=True)

@@ -11,22 +11,17 @@ import os
 import uuid
 from flask import current_app as app
 from flask import jsonify, make_response
-from flask_restx import Namespace, Resource
+from flask_restx import Resource
 from mongoengine.errors import ValidationError
 from werkzeug.datastructures import FileStorage
 from app.v1.models.capture import Capture
-
-
-# define namespaces
-api = Namespace('capture', description='Endpoint for uploading and deleting raw captures')
-post_model = Capture.post_model(api.parser())
-capture_marshal = api.model('Capture', Capture.api_model())
+from app.v1.namespaces.capture import api, capture_model, post_model
 
 
 @api.route('')
 class CapturesList(Resource):
 
-    @api.marshal_with(capture_marshal, as_list=True, code=200)
+    @api.marshal_with(capture_model, as_list=True, code=200)
     def get(self):
         """
         Get list of captures
@@ -34,7 +29,7 @@ class CapturesList(Resource):
         captures_list = Capture.objects()  # type: ignore
         return list(captures_list)
 
-    @api.marshal_with(capture_marshal, code=201)
+    @api.marshal_with(capture_model, code=201)
     @api.expect(post_model, validate=True)
     def post(self):
         """
@@ -62,7 +57,7 @@ class CapturesList(Resource):
 @api.route('/<string:id>')
 class Captures(Resource):
 
-    @api.marshal_with(capture_marshal, code=200)
+    @api.marshal_with(capture_model, code=200)
     def get(self, id: str):
         """
         Get a single capture

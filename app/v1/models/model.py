@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+import mongoengine as me
+from app.v1.models.apex import Apex
 from typing import Any, Dict
 from flask_restx.reqparse import RequestParser
 from flask_restx import fields
-import mongoengine as me
 from app.v1.models.capture import Capture
-from app.v1.models.apex import Apex
+from app.v1.namespaces.apex import apex_model
 from app.v1.models.processing import Dialation, Erosion, GaussianBlur, Threshold
 
 
@@ -27,8 +28,13 @@ class Model(me.Document):
             'created_at': fields.String(required=True, description="model creation timestamp"),
             'chi_squared_error': fields.Float(required=True, description="chi squared error"),
             'elapsed': fields.Float(required=True, description="curve fitting elapsed time"),
-            # 'apexes': fields.List(Apex, description="optimized apexes"),
-            # 'gaussian_blur': fields.Nested(GaussianBlur)
+            'apexes': fields.List(
+                fields.Nested(
+                    apex_model,
+                    description="Apex solution",
+                    required=True
+                )
+            )
         }
 
     @staticmethod
