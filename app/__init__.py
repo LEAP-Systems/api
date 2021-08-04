@@ -30,8 +30,13 @@ def init_app():
         # Include our Routes
         from app.v1.routes.captures import api as captures
         from app.v1.routes.models import api as models
+        from app.v1.namespaces.apex import api as apex
+        from app.v1.namespaces.gaussian import api as gaussian
+
         app.register_blueprint(bp)
         # add resource endpoints
         api.add_namespace(captures)
+        api.add_namespace(apex)
         api.add_namespace(models)
+        api.add_namespace(gaussian)
         return app
