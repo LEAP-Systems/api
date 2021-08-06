@@ -32,6 +32,7 @@ def init_app():
         from app.v1.routes.models import api as models
         from app.v1.namespaces.apex import api as apex
         from app.v1.namespaces.gaussian import api as gaussian
+        from app.v1.namespaces.erosion import api as erosion
 
         app.register_blueprint(bp)
         # add resource endpoints
@@ -39,4 +40,5 @@ def init_app():
         api.add_namespace(apex)
         api.add_namespace(models)
         api.add_namespace(gaussian)
+        api.add_namespace(erosion)
         return app
