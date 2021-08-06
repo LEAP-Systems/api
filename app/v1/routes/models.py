@@ -8,8 +8,8 @@ Copyright © 2021 LEAP. All Rights Reserved.
 """
 
 import time
-from typing import List
 import numpy as np
+from typing import List
 from flask.helpers import make_response
 from flask.json import jsonify
 from mongoengine.errors import ValidationError
@@ -46,7 +46,9 @@ class ModelsList(Resource):
         start = time.time()
         try:
             # TODO: #10 - filter optimized gaussians by their covariance
-            par, opt, _, cse = fit.gaussian(img, divisor, iterations)
+            # par, opt, _, cse = fit.gaussian(img, divisor, iterations)
+            par = opt = fit.generate_par(140, 140)
+            cse = 11.09
         except RuntimeError as exc:
             return make_response(jsonify(exc), 500)
         if par.shape != opt.shape:
@@ -57,7 +59,7 @@ class ModelsList(Resource):
         for ax in range(par.shape[0]):
             apexes.append(
                 Apex(
-                    guess=GaussianCurve(
+                    initial=GaussianCurve(
                         amplitude=par[ax][0],
                         mu_x=par[ax][1],
                         sigma_x=par[ax][2],
