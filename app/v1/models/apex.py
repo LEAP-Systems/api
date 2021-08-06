@@ -9,10 +9,12 @@ from app.v1.models.gaussian import GaussianCurve
 class Apex(me.EmbeddedDocument):
     initial = me.EmbeddedDocumentField(GaussianCurve)
     optimized = me.EmbeddedDocumentField(GaussianCurve)
+    chi = me.FloatField()
 
     @staticmethod
     def api_model() -> Dict[str, Any]:
         return {
+            'chi': fields.Float(description="chi squared error (χ2)"),
             'initial': fields.Nested(
                 gaussian_model,
                 description="Initial gaussian parameters",
@@ -20,7 +22,7 @@ class Apex(me.EmbeddedDocument):
             ),
             'optimized': fields.Nested(
                 gaussian_model,
-                description="Initial gaussian parameters",
+                description="Optimized gaussian parameters",
                 required=True
             ),
         }
