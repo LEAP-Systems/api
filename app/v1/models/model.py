@@ -6,6 +6,7 @@ from flask_restx.reqparse import RequestParser
 from flask_restx import fields
 from app.v1.models.capture import Capture
 from app.v1.namespaces.apex import apex_model
+from app.v1.namespaces.erosion import erosion_model
 from app.v1.models.processing import Dialation, Erosion, GaussianBlur, Threshold
 
 
@@ -13,11 +14,10 @@ class Model(me.Document):
     capture_id = me.ReferenceField(Capture, required=True)
     created_at = me.StringField(required=True)
     gaussian_blur = me.EmbeddedDocumentField(GaussianBlur)
-    erosions = me.EmbeddedDocumentField(Erosion)
-    dialations = me.EmbeddedDocumentField(Dialation)
+    erosion = me.ReferenceField(Erosion)
+    dialation = me.EmbeddedDocumentField(Dialation)
     threshold = me.EmbeddedDocumentField(Threshold)
     elapsed = me.FloatField(required=True)
-    chi_squared_error = me.FloatField(required=True)
     apexes = me.EmbeddedDocumentListField(Apex)
 
     @staticmethod
@@ -26,7 +26,22 @@ class Model(me.Document):
             'id': fields.String(required=True, description="model id"),
             'capture_id': fields.String(required=True, description="capture id"),
             'created_at': fields.String(required=True, description="model creation timestamp"),
-            'chi_squared_error': fields.Float(required=True, description="chi squared error"),
+            'erosion': fields.Nested(
+                erosion_model,
+                description="Erosion parameters"
+            ),
+            # 'dialation': fields.Nested(
+            #     dialation_model,
+            #     description="Dialation parameters"
+            # ),
+            # 'threshold': fields.Nested(
+            #     threshold_model,
+            #     description="Thresholding parameters"
+            # ),
+            # 'gaussian_blur': fields.Nested(
+            #     gaussian_blur_model,
+            #     description="Gaussian blur parameters"
+            # ),
             'elapsed': fields.Float(required=True, description="curve fitting elapsed time"),
             'apexes': fields.List(
                 fields.Nested(
@@ -42,19 +57,19 @@ class Model(me.Document):
         model.add_argument(
             "capture_id",
             type=str,
-            location='body',
+            location='json',
             help="Capture id for processing"
         )
         model.add_argument(
             "iterations",
             type=int,
-            location='body',
+            location='json',
             help="Minimization iterations"
         )
         model.add_argument(
             "divisor",
             type=int,
-            location='body',
+            location='json',
             help="Resolution divisor"
         )
         return model
