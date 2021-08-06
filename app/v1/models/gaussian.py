@@ -13,9 +13,9 @@ class GaussianCurve(me.EmbeddedDocument):
     @staticmethod
     def api_model() -> Dict[str, Any]:
         return {
-            'amplitude': fields.String(required=True, description="peak amplitude"),
-            'sigma_x': fields.String(required=True, description="standard deviation (σ) in x"),
-            'sigma_y': fields.String(required=True, description="standard deviation (σ) in y"),
-            'mu_x': fields.Float(required=True, description="mean (μ) in x"),
-            'mu_y': fields.Float(required=True, description="mean (μ) in y"),
+            'amplitude': fields.Float(required=True, description="peak amplitude"),
+            'sigma_x': fields.Float(required=True, description="standard deviation (σ) in x"),
+            'sigma_y': fields.Float(required=True, description="standard deviation (σ) in y"),
+            'mu_x': fields.Integer(required=True, description="mean (μ) in x"),
+            'mu_y': fields.Integer(required=True, description="mean (μ) in y"),
         }
