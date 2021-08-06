@@ -37,7 +37,18 @@ def generate_par(width: int, height: int) -> np.ndarray:
         [250, width - width / 5, width * 0.05, height - height / 5, height * 0.05],
         [200, width - width / 3, width * 0.03, height / 3, height * 0.03],
         [200, width - width / 3, width * 0.03, height - height / 3, height * 0.03],
-    ]).flatten()
+    ])
+
+    # return np.array([
+    #     [250, width / 5, width * 0.05, height / 5, height * 0.05],
+    #     [250, width / 5, width * 0.05, height - height / 5, height * 0.05],
+    #     [200, width / 3, width * 0.03, height / 3, height * 0.03],
+    #     [200, width / 3, width * 0.03, height - height / 3, height * 0.03],
+    #     [250, width - width / 5, width * 0.05, height / 5, height * 0.05],
+    #     [250, width - width / 5, width * 0.05, height - height / 5, height * 0.05],
+    #     [200, width - width / 3, width * 0.03, height / 3, height * 0.03],
+    #     [200, width - width / 3, width * 0.03, height - height / 3, height * 0.03],
+    # ]).flatten()
 
 
 def gaussian(img: np.ndarray, res: int, iterations: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray, float]:
