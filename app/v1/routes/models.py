@@ -19,8 +19,12 @@ from flask_restx import Resource
 from app.v1.functions import fit
 from app.v1.models.model import Model
 from app.v1.models.capture import Capture
-from app.v1.models.processing import Erosion, Dialation, GaussianBlur, Threshold
-from app.v1.models.apex import Apex, GaussianCurve
+from app.v1.models.erosion import Erosion
+from app.v1.models.dialation import Dialation
+from app.v1.models.gaussian_blur import GaussianBlur
+from app.v1.models.threshold import Threshold
+from app.v1.models.apex import Apex
+from app.v1.models.gaussian import GaussianCurve
 from app.v1.namespaces.model import api, model_model, post_model
 
 
