@@ -1,5 +1,5 @@
 from flask_restx import Namespace
-from app.v1.models.processing import Erosion
+from app.v1.models.erosion import Erosion
 
 
 # define namespaces

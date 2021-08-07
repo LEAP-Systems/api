@@ -3,5 +3,5 @@ from app.v1.models.gaussian import GaussianCurve
 
 
 # define namespaces
-api = Namespace('gaussian', description='Gaussian curve parameters')
-gaussian_model = api.model('GaussianCurve', GaussianCurve.api_model())
+api = Namespace('gaussian curve', description='gaussian curve parameters')
+gaussian_model = api.model('Gaussian Curve', GaussianCurve.api_model())
