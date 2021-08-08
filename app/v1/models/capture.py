@@ -9,11 +9,25 @@ Copyright © 2021 LEAP. All Rights Reserved.
 
 import mongoengine as me
 from datetime import datetime
-from typing import Any, Dict
-from flask_restx import fields
-from flask_restx.reqparse import RequestParser
+from flask_restx import fields, Namespace
 from werkzeug.datastructures import FileStorage
 
+api = Namespace('capture', description='Endpoint for uploading and deleting raw captures')
+post_model = api.parser()
+post_model.add_argument(
+    "file",
+    type=FileStorage,
+    location='files',
+    help="Capture for processing"
+)
+model = api.model(
+    'Capture', 
+    {
+        'id': fields.String(required=True, description="capture id"),
+        'path': fields.String(required=True, description="path to server-side image"),
+        'created_at': fields.String(required=True, description="Time of upload"),
+    }
+)
 
 class Capture(me.Document):
 
@@ -27,21 +41,3 @@ class Capture(me.Document):
         if not self.created_at:
             self.created_at = datetime.now().isoformat()
         return super().save(*args, **kwargs)
-
-    @staticmethod
-    def api_model() -> Dict[str, Any]:
-        return {
-            'id': fields.String(required=True, description="capture id"),
-            'path': fields.String(required=True, description="path to server-side image"),
-            'created_at': fields.String(required=True, description="Time of upload"),
-        }
-
-    @staticmethod
-    def post_model(model: RequestParser) -> RequestParser:
-        model.add_argument(
-            "file",
-            type=FileStorage,
-            location='files',
-            help="Capture for processing"
-        )
-        return model

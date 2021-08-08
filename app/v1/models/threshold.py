@@ -2,8 +2,20 @@
 import mongoengine as me
 from datetime import datetime
 from typing import Any, Dict
-from flask_restx import fields
+from flask_restx import fields, Namespace
 from enum import Enum
+
+api = Namespace('threshold', description='threshold parameters')
+model = api.model(
+    'Threshold', 
+    {
+        'id': fields.String(required=True, description="threshold id"),
+        'type': fields.String(required=True, description="thresholding type (inverse, normal)"),
+        'output': fields.Integer(required=True, min=0, max=255, description="erosion iterations"),
+        'threshold': fields.Integer(required=True, min=0, max=255, description="threshold value"),
+        'created_at': fields.String(required=True, description="created ISO datetime"),
+    }
+)
 
 class ThresholdTypes(Enum):
     INVERSE = 'inverse'
@@ -23,13 +35,3 @@ class Threshold(me.Document):
         if not self.created_at:
             self.created_at = datetime.now().isoformat()
         return super().save(*args, **kwargs)
-
-    @staticmethod
-    def api_model() -> Dict[str, Any]:
-        return {
-            'id': fields.String(required=True, description="threshold id"),
-            'type': fields.String(required=True, description="thresholding type (inverse, normal)"),
-            'output': fields.Integer(required=True, min=0, max=255, description="erosion iterations"),
-            'threshold': fields.Integer(required=True, min=0, max=255, description="threshold value"),
-            'created_at': fields.String(required=True, description="created ISO datetime"),
-        }

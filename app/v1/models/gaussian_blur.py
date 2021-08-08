@@ -1,9 +1,19 @@
 # -*- coding: utf-8 -*-
 import mongoengine as me
 from datetime import datetime
-from typing import Any, Dict
-from flask_restx import fields
+from flask_restx import fields, Namespace
 
+
+api = Namespace('gaussian blur', description='gaussian blur parameters')
+model = api.model(
+    'Gaussian Blur', 
+    {
+        'id': fields.String(required=True, description="Gaussian blur id"),
+        'kernel_width': fields.Integer(required=True, min=1, description="kernel width"),
+        'kernel_height': fields.Integer(required=True, min=1, description="kernel height"),
+        'created_at': fields.String(required=True, description="created ISO datetime"),
+    }
+)
 
 class GaussianBlur(me.Document):
 
@@ -19,12 +29,3 @@ class GaussianBlur(me.Document):
         if not self.created_at:
             self.created_at = datetime.now().isoformat()
         return super().save(*args, **kwargs)
-
-    @staticmethod
-    def api_model() -> Dict[str, Any]:
-        return {
-            'id': fields.String(required=True, description="Gaussian blur id"),
-            'kernel_width': fields.Integer(required=True, min=1, description="kernel width"),
-            'kernel_height': fields.Integer(required=True, min=1, description="kernel height"),
-            'created_at': fields.String(required=True, description="created ISO datetime"),
-        }

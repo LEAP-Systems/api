@@ -9,15 +9,17 @@ Copyright © 2021 LEAP. All Rights Reserved.
 
 import time
 import numpy as np
+
 from typing import List
 from flask.helpers import make_response
 from flask.json import jsonify
-from mongoengine.errors import ValidationError
 from PIL import Image
 from flask import current_app as app
-from flask_restx import Resource
+from flask_restx import Resource, Namespace
+from mongoengine.errors import ValidationError
+
 from app.v1.functions import fit
-from app.v1.models.model import Model
+from app.v1.models.model import Model, api, model, post_model
 from app.v1.models.capture import Capture
 from app.v1.models.erosion import Erosion
 from app.v1.models.dialation import Dialation
@@ -25,13 +27,13 @@ from app.v1.models.gaussian_blur import GaussianBlur
 from app.v1.models.threshold import Threshold
 from app.v1.models.apex import Apex
 from app.v1.models.gaussian import GaussianCurve
-from app.v1.namespaces.model import api, model_model, post_model
+
 
 
 @api.route('')
 class ModelsList(Resource):
 
-    @api.marshal_with(model_model, code=201)
+    @api.marshal_with(model, code=201)
     @api.expect(post_model, validate=True)
     def post(self):
         args = post_model.parse_args(strict=True)

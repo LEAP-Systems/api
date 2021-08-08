@@ -30,20 +30,20 @@ def init_app():
         # Include our Routes
         from app.v1.routes.captures import api as captures
         from app.v1.routes.models import api as models
-        from app.v1.namespaces.apex import api as apex
-        from app.v1.namespaces.gaussian import api as gaussian
-        from app.v1.namespaces.gaussian_blur import api as gaussian_blur
-        from app.v1.namespaces.erosion import api as erosion
-        from app.v1.namespaces.dialation import api as dialation
-        from app.v1.namespaces.threshold import api as threshold
+        from app.v1.models.apex import api as apex 
+        from app.v1.models.gaussian import api as gaussian
+        from app.v1.models.gaussian_blur import api as gaussian_blur
+        from app.v1.models.erosion import api as erosion
+        from app.v1.models.dialation import api as dialation
+        from app.v1.models.threshold import api as threshold
         app.register_blueprint(bp)
         # add resource endpoints
         api.add_namespace(captures)
-        api.add_namespace(apex)
         api.add_namespace(models)
+        api.add_namespace(apex)
         api.add_namespace(gaussian)
-        api.add_namespace(erosion)
+        api.add_namespace(gaussian_blur)
         api.add_namespace(dialation)
         api.add_namespace(threshold)
-        api.add_namespace(gaussian_blur)
+        api.add_namespace(erosion)
         return app

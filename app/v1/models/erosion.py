@@ -1,9 +1,19 @@
 # -*- coding: utf-8 -*-
 import mongoengine as me
 from datetime import datetime
-from typing import Any, Dict
-from flask_restx import fields
+from flask_restx import fields, Namespace
 
+api = Namespace('erosion', description='Image erosion')
+model = api.model(
+    'Erosion', 
+    {
+        'id': fields.String(required=True, description="erosion id"),
+        'iterations': fields.Integer(required=True, min=1, description="erosion iterations"),
+        'kernel_width': fields.Integer(required=True, min=1, description="kernel width"),
+        'kernel_height': fields.Integer(required=True, min=1, description="kernel height"),
+        'created_at': fields.String(required=True, description="created ISO datetime"),
+    }
+)
 
 class Erosion(me.Document):
 
@@ -21,12 +31,3 @@ class Erosion(me.Document):
             self.created_at = datetime.now().isoformat()
         return super().save(*args, **kwargs)
 
-    @staticmethod
-    def api_model() -> Dict[str, Any]:
-        return {
-            'id': fields.String(required=True, description="erosion id"),
-            'iterations': fields.Integer(required=True, min=1, description="erosion iterations"),
-            'kernel_width': fields.Integer(required=True, min=1, description="kernel width"),
-            'kernel_height': fields.Integer(required=True, min=1, description="kernel height"),
-            'created_at': fields.String(required=True, description="created ISO datetime"),
-        }
