@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import mongoengine as me
-from typing import Any, Dict
 from flask_restx.reqparse import RequestParser
 from flask_restx import fields, Namespace
+from datetime import datetime
 
 from app.v1.models.capture import Capture
 from app.v1.models.apex import Apex
@@ -81,3 +81,10 @@ class Model(me.Document):
     elapsed = me.FloatField(required=True)
     apexes = me.EmbeddedDocumentListField(Apex)
 
+    def __repr__(self):
+        return "{}: {}".format(self.__class__.__name__, vars(self))
+
+    def save(self, *args, **kwargs):
+        if not self.created_at:
+            self.created_at = datetime.now().isoformat()
+        return super().save(*args, **kwargs)
