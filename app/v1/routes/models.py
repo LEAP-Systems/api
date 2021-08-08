@@ -103,11 +103,11 @@ class ModelsList(Resource):
 @api.route('/<string:id>')
 class Models(Resource):
 
-    # @api.marshal_with(capture_marshal, code=200)
+    @api.marshal_with(model, code=200)
     def get(self, id: str):
         """
         Get model of a single capture 
         """
         # poll for status completion
-        model = Model.objects.get(capture_id=id)  # type: ignore
+        model = Model.objects.get(id=id)  # type: ignore
         return model
