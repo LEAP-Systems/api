@@ -44,10 +44,10 @@ class ModelsList(Resource):
         img_path = Capture.objects().get(id=capture_id).path  # type: ignore
         img = np.array(Image.open(img_path))
         # perform some kind of processing
-        gb = GaussianBlur(kernel_width=5, kernel_height=5)
-        erosion = Erosion(kernel_width=5, kernel_height=5, iterations=5)
-        dialation = Dialation(kernel_width=5, kernel_height=5, iterations=5)
-        threshold = Threshold(threshold=100, output=240, type="normal")
+        gb = GaussianBlur(kernel_width=5, kernel_height=5).save()
+        erosion = Erosion(kernel_width=5, kernel_height=5, iterations=5).save()
+        dialation = Dialation(kernel_width=5, kernel_height=5, iterations=5).save()
+        threshold = Threshold(threshold=100, output=240, type="normal").save()
         # perform gaussian curve fit
         start = time.time()
         try:
@@ -65,6 +65,7 @@ class ModelsList(Resource):
         for ax in range(par.shape[0]):
             apexes.append(
                 Apex(
+                    chi=cse,
                     initial=GaussianCurve(
                         amplitude=par[ax][0],
                         mu_x=par[ax][1],
@@ -87,7 +88,6 @@ class ModelsList(Resource):
             dialation=dialation,
             gaussian_blur=gb,
             threshold=threshold,
-            chi_squared_error=cse,
             elapsed=elapsed,
             apexes=apexes
         )
@@ -96,6 +96,7 @@ class ModelsList(Resource):
         except ValidationError as exc:
             app.logger.exception("Model validation failed: %s", exc)
             return make_response(jsonify(message="Invalid types for models {}".format(exc))), 400
+        app.logger.debug("End of post")
         return model
 
 
