@@ -1,0 +1,24 @@
+{
+    "capture_id": "61098f127e47df4be13b15e0",
+    "iterations": 5000,
+    "divisor": 2,
+    "gaussian_blur": {
+        "kernel_width": 5,
+        "kernel_height": 5
+    },
+    "dialation": {
+        "kernel_width": 5,
+        "kernel_height": 5,
+        "iterations": 4
+    },
+    "erosion": {
+        "kernel_width": 5,
+        "kernel_height": 5,
+        "iterations": 4
+    },
+    "threshold": {
+        "type": "inverse",
+        "output": 5,
+        "threshold": 240
+    }
+}
