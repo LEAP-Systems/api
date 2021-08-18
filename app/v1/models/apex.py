@@ -7,7 +7,7 @@ from app.v1.models.gaussian import model as gaussian_model
 
 api = Namespace('apex', description='apex')
 model = api.model(
-    'Apex', 
+    'Apex',
     {
         'chi': fields.Float(description="chi squared error (χ2)"),
         'initial': fields.Nested(
@@ -23,8 +23,8 @@ model = api.model(
     }
 )
 
+
 class Apex(me.EmbeddedDocument):
     initial = me.EmbeddedDocumentField(GaussianCurve)
     optimized = me.EmbeddedDocumentField(GaussianCurve)
     chi = me.FloatField()
-
