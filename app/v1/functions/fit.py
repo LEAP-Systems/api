@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-from typing import List, Tuple, Union
+from typing import Tuple
 from flask import current_app as app
 from scipy import optimize
 
@@ -37,18 +37,7 @@ def generate_par(width: int, height: int) -> np.ndarray:
         [250, width - width / 5, width * 0.05, height - height / 5, height * 0.05],
         [200, width - width / 3, width * 0.03, height / 3, height * 0.03],
         [200, width - width / 3, width * 0.03, height - height / 3, height * 0.03],
-    ])
-
-    # return np.array([
-    #     [250, width / 5, width * 0.05, height / 5, height * 0.05],
-    #     [250, width / 5, width * 0.05, height - height / 5, height * 0.05],
-    #     [200, width / 3, width * 0.03, height / 3, height * 0.03],
-    #     [200, width / 3, width * 0.03, height - height / 3, height * 0.03],
-    #     [250, width - width / 5, width * 0.05, height / 5, height * 0.05],
-    #     [250, width - width / 5, width * 0.05, height - height / 5, height * 0.05],
-    #     [200, width - width / 3, width * 0.03, height / 3, height * 0.03],
-    #     [200, width - width / 3, width * 0.03, height - height / 3, height * 0.03],
-    # ]).flatten()
+    ]).flatten()
 
 
 def gaussian(img: np.ndarray, res: int, iterations: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray, float]:
