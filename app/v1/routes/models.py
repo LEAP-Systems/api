@@ -29,7 +29,6 @@ from app.v1.models.apex import Apex
 from app.v1.models.gaussian import GaussianCurve
 
 
-
 @api.route('')
 class ModelsList(Resource):
 
@@ -40,6 +39,8 @@ class ModelsList(Resource):
         divisor: int = args["divisor"]
         capture_id: str = args["capture_id"]
         iterations: int = args["iterations"]
+        app.logger.info("Query: divisor: %s capture_id: %s iterations: %s",
+                        divisor, capture_id, iterations)
         # query db for image path
         img_path = Capture.objects().get(id=capture_id).path  # type: ignore
         img = np.array(Image.open(img_path))
