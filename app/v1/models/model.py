@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import mongoengine as me
-from flask_restx.reqparse import RequestParser
 from flask_restx import fields, Namespace
 from datetime import datetime
 
@@ -18,25 +17,123 @@ from app.v1.models.gaussian_blur import model as gaussian_blur_model
 
 
 api = Namespace('model', description='gaussian curve fitting models')
-post_model = api.parser()
-post_model.add_argument(
-    "capture_id",
-    type=str,
-    location='json',
-    help="Capture id for processing"
-)
-post_model.add_argument(
-    "iterations",
-    type=int,
-    location='json',
-    help="Minimization iterations"
-)
-post_model.add_argument(
-    "divisor",
-    type=int,
-    location='json',
-    help="Resolution divisor"
-)
+request_schema = {
+    'type': 'object',
+    'properties': {
+        'capture_id': {
+            'type': 'string',
+            "minLength": 24,
+            "maxLength": 24
+        },
+        'iterations': {
+            'type': 'integer',
+            'minimum': 1
+        },
+        'divisor': {
+            'type': 'integer',
+            'minimum': 1
+        },
+        'gaussian_blur': {
+            'type': 'object',
+            'properties': {
+                'kernel_width': {
+                    'type': 'integer',
+                    'minimum': 1,
+                    'not': {'multipleOf': 2}
+                },
+                'kernel_height': {
+                    'type': 'integer',
+                    'minimum': 1,
+                    'not': {'multipleOf': 2}
+                },
+            },
+            'required': [
+                'kernel_width',
+                'kernel_height'
+            ],
+        },
+        'dialation': {
+            'type': 'object',
+            'properties': {
+                'iterations': {
+                    'type': 'integer',
+                    'minimum': 1
+                },
+                'kernel_width': {
+                    'type': 'integer',
+                    'minimum': 1,
+                    'not': {'multipleOf': 2}
+                },
+                'kernel_height': {
+                    'type': 'integer',
+                    'minimum': 1,
+                    'not': {'multipleOf': 2}
+                },
+            },
+            'required': [
+                'kernel_width',
+                'kernel_height',
+                'iterations'
+            ],
+        },
+        'erosion': {
+            'type': 'object',
+            'properties': {
+                'iterations': {
+                    'type': 'integer',
+                    'minimum': 1
+                },
+                'kernel_width': {
+                    'type': 'integer',
+                    'minimum': 1,
+                    'not': {'multipleOf': 2}
+                },
+                'kernel_height': {
+                    'type': 'integer',
+                    'minimum': 1,
+                    'not': {'multipleOf': 2}
+                },
+            },
+            'required': [
+                'kernel_width',
+                'kernel_height',
+                'iterations'
+            ],
+        },
+        'threshold': {
+            'type': 'object',
+            'properties': {
+                'threshold': {
+                    'type': 'integer',
+                    'minimum': 0,
+                    'maximum': 255
+                },
+                'output': {
+                    'type': 'integer',
+                    'minimum': 0,
+                    'maximum': 255
+                },
+                'type': {
+                    'type': 'string',
+                    'enum': ["normal", "inverse"]
+                },
+            },
+            'required': [
+                'threshold',
+                'output',
+                'type'
+            ],
+        }
+    },
+    'required': [
+        'capture_id',
+        'iterations',
+        'divisor'
+    ],
+    'additionalProperties': False
+}
+post_model = api.schema_model('post_request', request_schema)
+
 
 model = api.model(
     'Model',
@@ -70,6 +167,7 @@ model = api.model(
         )
     }
 )
+
 
 class Model(me.Document):
     capture_id = me.ReferenceField(Capture, required=True)
