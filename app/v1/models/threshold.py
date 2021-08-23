@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 import mongoengine as me
 from datetime import datetime
-from typing import Any, Dict
 from flask_restx import fields, Namespace
 from enum import Enum
 
 api = Namespace('threshold', description='threshold parameters')
 model = api.model(
-    'Threshold', 
+    'Threshold',
     {
         'id': fields.String(required=True, description="threshold id"),
         'type': fields.String(required=True, description="thresholding type (inverse, normal)"),
@@ -17,9 +16,11 @@ model = api.model(
     }
 )
 
+
 class ThresholdTypes(Enum):
     INVERSE = 'inverse'
     NORMAL = 'normal'
+
 
 class Threshold(me.Document):
 

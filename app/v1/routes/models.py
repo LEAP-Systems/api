@@ -9,7 +9,7 @@ Copyright © 2021 LEAP. All Rights Reserved.
 
 import time
 import numpy as np
-from typing import List, Optional, Tuple
+from typing import List, Optional
 from flask.helpers import make_response
 from flask.json import jsonify
 from PIL import Image
@@ -103,7 +103,7 @@ class ModelsList(Resource):
         return model
 
     @staticmethod
-    def processing_pipeline(img: np.ndarray, payload: dict) -> Tuple[np.ndarray, Optional[GaussianBlur], Optional[Erosion], Optional[Dialation], Optional[Threshold]]:
+    def processing_pipeline(img: np.ndarray, payload: dict):
         # extract optional parameters if any
         gaussian_blur_params: Optional[dict] = payload.get("gaussian_blur")
         erosion_params: Optional[dict] = payload.get("erosion")

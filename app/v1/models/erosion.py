@@ -5,7 +5,7 @@ from flask_restx import fields, Namespace
 
 api = Namespace('erosion', description='Image erosion')
 model = api.model(
-    'Erosion', 
+    'Erosion',
     {
         'id': fields.String(required=True, description="erosion id"),
         'iterations': fields.Integer(required=True, min=1, description="erosion iterations"),
@@ -14,6 +14,7 @@ model = api.model(
         'created_at': fields.String(required=True, description="created ISO datetime"),
     }
 )
+
 
 class Erosion(me.Document):
 
@@ -30,4 +31,3 @@ class Erosion(me.Document):
         if not self.created_at:
             self.created_at = datetime.now().isoformat()
         return super().save(*args, **kwargs)
-

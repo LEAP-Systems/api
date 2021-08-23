@@ -15,6 +15,8 @@ model = api.model(
         'created_at': fields.String(required=True, description="created ISO datetime"),
     }
 )
+
+
 class Dialation(me.Document):
 
     iterations = me.IntField(required=True, min_value=1)

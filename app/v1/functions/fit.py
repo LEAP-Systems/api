@@ -40,7 +40,7 @@ def generate_par(width: int, height: int) -> np.ndarray:
     ]).flatten()
 
 
-def gaussian(img: np.ndarray, res: int, iterations: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray, float]:
+def gaussian(img: np.ndarray, res: int, iterations: int) -> Tuple[np.ndarray, np.ndarray, float]:
     app.logger.debug("Computing multi gaussian fit @ 1/%s resolution", res)
     # normalize minimum pixel values (flatten noise floor)
     img -= np.min(img)
@@ -67,4 +67,4 @@ def gaussian(img: np.ndarray, res: int, iterations: int) -> Tuple[np.ndarray, np
     # apply chi squared minimization
     chi = np.subtract(_input, model)**2 / model
     cse = np.mean(chi)
-    return par, popt, pcov, cse
+    return par, popt, cse

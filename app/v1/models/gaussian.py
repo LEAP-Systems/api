@@ -1,7 +1,6 @@
-from typing import Any, Dict
+# -*- coding: utf-8 -*-
 import mongoengine as me
 from flask_restx import fields, Namespace
-from flask_restx import Namespace
 
 api = Namespace('gaussian curve', description='gaussian curve parameters')
 model = api.model(
@@ -14,6 +13,8 @@ model = api.model(
         'mu_y': fields.Integer(required=True, min=0, description="mean (μ) in y"),
     }
 )
+
+
 class GaussianCurve(me.EmbeddedDocument):
 
     amplitude = me.FloatField(required=True, min_value=0, max_value=255)
