@@ -5,6 +5,40 @@ from flask_restx import fields, Namespace
 from enum import Enum
 
 api = Namespace('threshold', description='threshold parameters')
+
+
+class ThresholdTypes(Enum):
+    INVERSE = 'inverse'
+    NORMAL = 'normal'
+
+
+threshold_request_schema = {
+    'type': 'object',
+    'properties': {
+        'threshold': {
+            'type': 'integer',
+            'minimum': 0,
+            'maximum': 255
+        },
+        'output': {
+            'type': 'integer',
+            'minimum': 0,
+            'maximum': 255
+        },
+        'type': {
+            'type': 'string',
+            'enum': [ThresholdTypes.NORMAL, ThresholdTypes.INVERSE]
+        },
+    },
+    'required': [
+        'threshold',
+        'output',
+        'type'
+    ],
+    'additionalProperties': False
+}
+threshold_post_model = api.schema_model('threshold_post_request', threshold_request_schema)
+
 model = api.model(
     'Threshold',
     {
@@ -15,11 +49,6 @@ model = api.model(
         'created_at': fields.String(required=True, description="created ISO datetime"),
     }
 )
-
-
-class ThresholdTypes(Enum):
-    INVERSE = 'inverse'
-    NORMAL = 'normal'
 
 
 class Threshold(me.Document):

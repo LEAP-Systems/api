@@ -52,7 +52,7 @@ class ModelsList(Resource):
         start = time.time()
         try:
             # TODO: #10 - filter optimized gaussians by their covariance
-            par, opt, _, cse = fit.gaussian(processed, divisor, iterations)
+            par, opt, cse = fit.gaussian(processed, divisor, iterations)
         except RuntimeError as exc:
             return make_response(jsonify(exc), 500)
         if par.shape != opt.shape:

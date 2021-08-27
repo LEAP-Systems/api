@@ -8,7 +8,7 @@ from app.v1.models.apex import Apex
 from app.v1.models.apex import model as apex_model
 from app.v1.models.dialation import Dialation
 from app.v1.models.dialation import model as dialation_model
-from app.v1.models.threshold import Threshold
+from app.v1.models.threshold import Threshold, threshold_request_schema
 from app.v1.models.threshold import model as threshold_model
 from app.v1.models.erosion import Erosion
 from app.v1.models.erosion import model as erosion_model
@@ -100,30 +100,7 @@ request_schema = {
                 'iterations'
             ],
         },
-        'threshold': {
-            'type': 'object',
-            'properties': {
-                'threshold': {
-                    'type': 'integer',
-                    'minimum': 0,
-                    'maximum': 255
-                },
-                'output': {
-                    'type': 'integer',
-                    'minimum': 0,
-                    'maximum': 255
-                },
-                'type': {
-                    'type': 'string',
-                    'enum': ["normal", "inverse"]
-                },
-            },
-            'required': [
-                'threshold',
-                'output',
-                'type'
-            ],
-        }
+        'threshold': threshold_request_schema
     },
     'required': [
         'capture_id',
