@@ -3,10 +3,29 @@ import mongoengine as me
 from datetime import datetime
 from flask_restx import fields, Namespace
 
+gaussian_blur_request_schema = {
+    'type': 'object',
+    'properties': {
+        'kernel_width': {
+            'type': 'integer',
+            'minimum': 1,
+            'not': {'multipleOf': 2}
+        },
+        'kernel_height': {
+            'type': 'integer',
+            'minimum': 1,
+            'not': {'multipleOf': 2}
+        },
+    },
+    'required': [
+        'kernel_width',
+        'kernel_height'
+    ],
+}
 
 api = Namespace('gaussian blur', description='gaussian blur parameters')
-model = api.model(
-    'Gaussian Blur', 
+gaussian_blur_model = api.model(
+    'Gaussian Blur',
     {
         'id': fields.String(required=True, description="Gaussian blur id"),
         'kernel_width': fields.Integer(required=True, min=1, description="kernel width"),
@@ -14,6 +33,7 @@ model = api.model(
         'created_at': fields.String(required=True, description="created ISO datetime"),
     }
 )
+
 
 class GaussianBlur(me.Document):
 
@@ -24,7 +44,7 @@ class GaussianBlur(me.Document):
 
     def __repr__(self):
         return "{}: {}".format(self.__class__.__name__, vars(self))
-    
+
     def save(self, *args, **kwargs):
         if not self.created_at:
             self.created_at = datetime.now().isoformat()

@@ -39,7 +39,7 @@ threshold_request_schema = {
 }
 threshold_post_model = api.schema_model('threshold_post_request', threshold_request_schema)
 
-model = api.model(
+threshold_model = api.model(
     'Threshold',
     {
         'id': fields.String(required=True, description="threshold id"),

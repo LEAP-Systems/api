@@ -3,8 +3,34 @@ import mongoengine as me
 from datetime import datetime
 from flask_restx import fields, Namespace
 
+erosion_request_schema = {
+    'type': 'object',
+    'properties': {
+        'iterations': {
+            'type': 'integer',
+            'minimum': 1
+        },
+        'kernel_width': {
+            'type': 'integer',
+            'minimum': 1,
+            'not': {'multipleOf': 2}
+        },
+        'kernel_height': {
+            'type': 'integer',
+            'minimum': 1,
+            'not': {'multipleOf': 2}
+        },
+    },
+    'required': [
+        'kernel_width',
+        'kernel_height',
+        'iterations'
+    ],
+}
+
+
 api = Namespace('erosion', description='Image erosion')
-model = api.model(
+erosion_model = api.model(
     'Erosion',
     {
         'id': fields.String(required=True, description="erosion id"),

@@ -3,9 +3,34 @@ import mongoengine as me
 from datetime import datetime
 from flask_restx import fields, Namespace
 
+dialation_request_schema = {
+    'type': 'object',
+    'properties': {
+        'iterations': {
+            'type': 'integer',
+            'minimum': 1
+        },
+        'kernel_width': {
+            'type': 'integer',
+            'minimum': 1,
+            'not': {'multipleOf': 2}
+        },
+        'kernel_height': {
+            'type': 'integer',
+            'minimum': 1,
+            'not': {'multipleOf': 2}
+        },
+    },
+    'required': [
+        'kernel_width',
+        'kernel_height',
+        'iterations'
+    ],
+},
+
 
 api = Namespace('dialation', description='Image dialation')
-model = api.model(
+dialation_model = api.model(
     'Dialation',
     {
         'id': fields.String(required=True, description="dialation id"),
