@@ -9,7 +9,7 @@ Copyright © 2021 LEAP. All Rights Reserved.
 
 import time
 import numpy as np
-from typing import List, Optional
+from typing import List
 from flask.helpers import make_response
 from flask.json import jsonify
 from PIL import Image
@@ -21,10 +21,6 @@ from mongoengine.errors import ValidationError
 from app.v1.utils import fit
 from app.v1.models.model import Model, api, model, post_model
 from app.v1.models.capture import Capture
-from app.v1.models.erosion import Erosion
-from app.v1.models.dialation import Dialation
-from app.v1.models.gaussian_blur import GaussianBlur
-from app.v1.models.threshold import Threshold
 from app.v1.models.apex import Apex
 from app.v1.models.gaussian import GaussianCurve
 
