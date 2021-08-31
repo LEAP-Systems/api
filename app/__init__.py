@@ -30,7 +30,7 @@ def init_app():
         # Include our Routes
         from app.v1.routes.captures import api as captures
         from app.v1.routes.models import api as models
-        from app.v1.routes.processor import api as processors
+        from app.v1.routes.processors import api as processors
         # include models
         from app.v1.models.apex import api as apex
         from app.v1.models.gaussian import api as gaussian

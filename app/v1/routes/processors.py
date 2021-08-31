@@ -75,7 +75,9 @@ class ProcessorList(Resource):
             processor.save()
         except ValidationError as exc:
             app.logger.exception("Processor validation failed: %s", exc)
-            return make_response(jsonify(message="Invalid types for processors {}".format(exc))), 400
+            return make_response(
+                jsonify(message="Invalid types for processors {}".format(exc))
+            ), 400
         app.logger.debug("Saved processor")
         return processor
 
