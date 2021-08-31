@@ -25,6 +25,10 @@ model = api.model(
 
 
 class Apex(me.EmbeddedDocument):
+
     initial = me.EmbeddedDocumentField(GaussianCurve)
     optimized = me.EmbeddedDocumentField(GaussianCurve)
     chi = me.FloatField()
+
+    def __repr__(self):
+        return "{}: {}".format(self.__class__.__name__, vars(self))

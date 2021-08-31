@@ -22,3 +22,6 @@ class GaussianCurve(me.EmbeddedDocument):
     sigma_y = me.FloatField(required=True, min_value=0)
     mu_x = me.IntField(required=True, min_value=0)
     mu_y = me.IntField(required=True, min_value=0)
+
+    def __repr__(self):
+        return "{}: {}".format(self.__class__.__name__, vars(self))
