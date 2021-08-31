@@ -27,6 +27,6 @@ jobs:
       - name: Check out the codebase.
         uses: actions/checkout@v2
       - name: Install pytest 
-        run: python3 -m pip install pytest, pytest-cov
+        run: python3 -m pip install pytest pytest-cov
       - name: Run lint directive
         run: pytest --cov=app -v
