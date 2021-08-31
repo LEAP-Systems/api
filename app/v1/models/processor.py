@@ -10,7 +10,7 @@ import mongoengine as me
 from flask_restx import fields, Namespace
 from datetime import datetime
 
-from app.v1.models.dilation import dilation, dilation_request_schema, dilation_model
+from app.v1.models.dilation import Dilation, dilation_request_schema, dilation_model
 from app.v1.models.threshold import Threshold, threshold_request_schema, threshold_model
 from app.v1.models.erosion import Erosion, erosion_request_schema, erosion_model
 from app.v1.models.gaussian_blur import (
@@ -61,7 +61,7 @@ class Processor(me.Document):
     created_at = me.StringField(required=True)
     gaussian_blur = me.EmbeddedDocumentField(GaussianBlur)
     erosion = me.EmbeddedDocumentField(Erosion)
-    dilation = me.EmbeddedDocumentField(dilation)
+    dilation = me.EmbeddedDocumentField(Dilation)
     threshold = me.EmbeddedDocumentField(Threshold)
 
     def __repr__(self):

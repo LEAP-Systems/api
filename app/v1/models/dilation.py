@@ -39,7 +39,7 @@ dilation_model = api.model(
 )
 
 
-class dilation(me.EmbeddedDocument):
+class Dilation(me.EmbeddedDocument):
 
     iterations = me.IntField(required=True, min_value=1)
     # kernel shape must be odd numbers

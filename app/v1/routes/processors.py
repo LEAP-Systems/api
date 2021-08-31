@@ -13,7 +13,7 @@ from flask.json import jsonify
 
 from mongoengine.errors import ValidationError
 from app.v1.models.threshold import Threshold
-from app.v1.models.dilation import dilation
+from app.v1.models.dilation import Dilation
 from app.v1.models.erosion import Erosion
 from app.v1.models.gaussian_blur import GaussianBlur
 from flask import request
@@ -57,7 +57,7 @@ class ProcessorList(Resource):
             )
             app.logger.debug("Saved erosion modifier: %s", erosion)
         if dilation_params:
-            dilation = dilation(
+            dilation = Dilation(
                 kernel_width=dilation_params.get('kernel_width'),
                 kernel_height=dilation_params.get('kernel_height'),
                 iterations=dilation_params.get('iterations')
