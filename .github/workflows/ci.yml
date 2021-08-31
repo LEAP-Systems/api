@@ -26,7 +26,9 @@ jobs:
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v2
-      - name: Install pytest 
+      - name: Install pytest
         run: python3 -m pip install pytest pytest-cov
-      - name: Run lint directive
+      - name: Install app dependancies
+        run: python3 -m pip install -r requirements.txt
+      - name: Run coverage report
         run: pytest --cov=app -v
