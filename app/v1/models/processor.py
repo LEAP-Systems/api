@@ -32,7 +32,6 @@ processor_request_schema = {
 
 processor_post_model = api.schema_model('post_request', processor_request_schema)
 
-
 processor_model = api.model(
     'Processor',
     {
