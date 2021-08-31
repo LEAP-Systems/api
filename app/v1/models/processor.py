@@ -17,7 +17,7 @@ from app.v1.models.gaussian_blur import (
     GaussianBlur, gaussian_blur_request_schema, gaussian_blur_model
 )
 
-
+api = Namespace('processor', description='image processing specifications')
 processor_request_schema = {
     'type': 'object',
     'properties': {
@@ -29,12 +29,11 @@ processor_request_schema = {
     'additionalProperties': False
 }
 
-api = Namespace('processor', description='image processing specifications')
 
-post_model = api.schema_model('post_request', processor_request_schema)
+processor_post_model = api.schema_model('post_request', processor_request_schema)
 
 
-model = api.model(
+processor_model = api.model(
     'Processor',
     {
         'id': fields.String(required=True, description="processor id"),
