@@ -3,18 +3,10 @@ import mongoengine as me
 from flask_restx import fields, Namespace
 from datetime import datetime
 
-from app.v1.models.capture import Capture
 from app.v1.models.apex import Apex
 from app.v1.models.apex import model as apex_model
-from app.v1.models.dialation import Dialation
-from app.v1.models.dialation import model as dialation_model
-from app.v1.models.threshold import Threshold, threshold_request_schema
-from app.v1.models.threshold import model as threshold_model
-from app.v1.models.erosion import Erosion
-from app.v1.models.erosion import model as erosion_model
-from app.v1.models.gaussian_blur import GaussianBlur
-from app.v1.models.gaussian_blur import model as gaussian_blur_model
-
+from app.v1.models.capture import Capture
+from app.v1.models.processor import Processor
 
 api = Namespace('model', description='gaussian curve fitting models')
 request_schema = {
@@ -33,81 +25,13 @@ request_schema = {
             'type': 'integer',
             'minimum': 1
         },
-        'gaussian_blur': {
-            'type': 'object',
-            'properties': {
-                'kernel_width': {
-                    'type': 'integer',
-                    'minimum': 1,
-                    'not': {'multipleOf': 2}
-                },
-                'kernel_height': {
-                    'type': 'integer',
-                    'minimum': 1,
-                    'not': {'multipleOf': 2}
-                },
-            },
-            'required': [
-                'kernel_width',
-                'kernel_height'
-            ],
-        },
-        'dialation': {
-            'type': 'object',
-            'properties': {
-                'iterations': {
-                    'type': 'integer',
-                    'minimum': 1
-                },
-                'kernel_width': {
-                    'type': 'integer',
-                    'minimum': 1,
-                    'not': {'multipleOf': 2}
-                },
-                'kernel_height': {
-                    'type': 'integer',
-                    'minimum': 1,
-                    'not': {'multipleOf': 2}
-                },
-            },
-            'required': [
-                'kernel_width',
-                'kernel_height',
-                'iterations'
-            ],
-        },
-        'erosion': {
-            'type': 'object',
-            'properties': {
-                'iterations': {
-                    'type': 'integer',
-                    'minimum': 1
-                },
-                'kernel_width': {
-                    'type': 'integer',
-                    'minimum': 1,
-                    'not': {'multipleOf': 2}
-                },
-                'kernel_height': {
-                    'type': 'integer',
-                    'minimum': 1,
-                    'not': {'multipleOf': 2}
-                },
-            },
-            'required': [
-                'kernel_width',
-                'kernel_height',
-                'iterations'
-            ],
-        },
-        'threshold': threshold_request_schema
-    },
-    'required': [
-        'capture_id',
-        'iterations',
-        'divisor'
-    ],
-    'additionalProperties': False
+        'required': [
+            'capture_id',
+            'iterations',
+            'divisor'
+        ],
+        'additionalProperties': False
+    }
 }
 post_model = api.schema_model('post_request', request_schema)
 
@@ -117,23 +41,8 @@ model = api.model(
     {
         'id': fields.String(required=True, description="model id"),
         'capture_id': fields.String(required=True, description="capture id"),
+        'processor_id': fields.String(required=False, description="image processor id"),
         'created_at': fields.String(required=True, description="model creation timestamp"),
-        'erosion': fields.Nested(
-            erosion_model,
-            description="Erosion parameters"
-        ),
-        'dialation': fields.Nested(
-            dialation_model,
-            description="Dialation parameters"
-        ),
-        'threshold': fields.Nested(
-            threshold_model,
-            description="Thresholding parameters"
-        ),
-        'gaussian_blur': fields.Nested(
-            gaussian_blur_model,
-            description="Gaussian blur parameters"
-        ),
         'elapsed': fields.Float(required=True, description="curve fitting elapsed time"),
         'apexes': fields.List(
             fields.Nested(
@@ -148,11 +57,8 @@ model = api.model(
 
 class Model(me.Document):
     capture_id = me.ReferenceField(Capture, required=True)
+    capture_id = me.ReferenceField(Processor, required=False)
     created_at = me.StringField(required=True)
-    gaussian_blur = me.ReferenceField(GaussianBlur)
-    erosion = me.ReferenceField(Erosion)
-    dialation = me.ReferenceField(Dialation)
-    threshold = me.ReferenceField(Threshold)
     elapsed = me.FloatField(required=True)
     apexes = me.EmbeddedDocumentListField(Apex)
 

@@ -18,7 +18,7 @@ from flask import current_app as app
 from flask_restx import Resource
 from mongoengine.errors import ValidationError
 
-from app.v1.functions import fit
+from app.v1.utils import fit
 from app.v1.models.model import Model, api, model, post_model
 from app.v1.models.capture import Capture
 from app.v1.models.erosion import Erosion
