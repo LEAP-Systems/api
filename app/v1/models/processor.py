@@ -60,10 +60,10 @@ processor_model = api.model(
 
 class Processor(me.Document):
     created_at = me.StringField(required=True)
-    gaussian_blur = me.ReferenceField(GaussianBlur)
-    erosion = me.ReferenceField(Erosion)
-    dialation = me.ReferenceField(Dialation)
-    threshold = me.ReferenceField(Threshold)
+    gaussian_blur = me.EmbeddedDocumentField(GaussianBlur)
+    erosion = me.EmbeddedDocumentField(Erosion)
+    dialation = me.EmbeddedDocumentField(Dialation)
+    threshold = me.EmbeddedDocumentField(Threshold)
 
     def __repr__(self):
         return "{}: {}".format(self.__class__.__name__, vars(self))
