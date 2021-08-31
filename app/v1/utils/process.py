@@ -15,14 +15,14 @@ class Modifiers:
     def erosion(img: np.ndarray, params: dict) -> np.ndarray: ...
 
     @staticmethod
-    def dialation(img: np.ndarray, params: dict) -> np.ndarray: ...
+    def dilation(img: np.ndarray, params: dict) -> np.ndarray: ...
 
 
 def process(img: np.ndarray, processor: Processor) -> np.ndarray:
-    if processor.dialation:
-        img = Modifiers.dialation(img, processor.dialation)
+    if processor.dilation:
+        img = Modifiers.dilation(img, processor.dilation)
     if processor.erosion:
-        img = Modifiers.dialation(img, processor.erosion)
+        img = Modifiers.dilation(img, processor.erosion)
     if processor.threshold:
         img = Modifiers.threshold(img, processor.threshold)
     if processor.gaussian_blur:

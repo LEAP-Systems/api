@@ -85,7 +85,7 @@ Create a new image processor record
       "kernel_width": 3,
       "kernel_height": 3
    },
-   "dialation": {
+   "dilation": {
       "kernel_width": 3,
       "kernel_height": 3,
       "iterations": 20

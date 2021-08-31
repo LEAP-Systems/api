@@ -13,7 +13,7 @@ from flask.json import jsonify
 
 from mongoengine.errors import ValidationError
 from app.v1.models.threshold import Threshold
-from app.v1.models.dialation import Dialation
+from app.v1.models.dilation import dilation
 from app.v1.models.erosion import Erosion
 from app.v1.models.gaussian_blur import GaussianBlur
 from flask import request
@@ -41,7 +41,7 @@ class ProcessorList(Resource):
         # extract optional parameters if any
         gaussian_blur_params: Optional[dict] = payload.get("gaussian_blur")
         erosion_params: Optional[dict] = payload.get("erosion")
-        dialation_params: Optional[dict] = payload.get("dialation")
+        dilation_params: Optional[dict] = payload.get("dilation")
         threshold_params: Optional[dict] = payload.get("threshold")
         if gaussian_blur_params:
             gaussian_blur = GaussianBlur(
@@ -56,13 +56,13 @@ class ProcessorList(Resource):
                 iterations=erosion_params.get('iterations')
             )
             app.logger.debug("Saved erosion modifier: %s", erosion)
-        if dialation_params:
-            dialation = Dialation(
-                kernel_width=dialation_params.get('kernel_width'),
-                kernel_height=dialation_params.get('kernel_height'),
-                iterations=dialation_params.get('iterations')
+        if dilation_params:
+            dilation = dilation(
+                kernel_width=dilation_params.get('kernel_width'),
+                kernel_height=dilation_params.get('kernel_height'),
+                iterations=dilation_params.get('iterations')
             )
-            app.logger.debug("Saved dialation modifier: %s", dialation)
+            app.logger.debug("Saved dilation modifier: %s", dilation)
         if threshold_params:
             threshold = Threshold(
                 threshold=threshold_params.get('threshold'),

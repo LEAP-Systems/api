@@ -19,7 +19,7 @@ def new_processor():
 
 
 def test_processor(new_processor: Processor):
-    assert new_processor.dialation is not None
+    assert new_processor.dilation is not None
     assert new_processor.erosion is not None
     assert new_processor.gaussian_blur is not None
     assert new_processor.threshold is not None

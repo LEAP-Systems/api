@@ -36,7 +36,7 @@ def init_app():
         from app.v1.models.gaussian import api as gaussian
         from app.v1.models.gaussian_blur import api as gaussian_blur
         from app.v1.models.erosion import api as erosion
-        from app.v1.models.dialation import api as dialation
+        from app.v1.models.dilation import api as dilation
         from app.v1.models.threshold import api as threshold
         from app.v1.models.processor import api as processor
         app.register_blueprint(bp)
@@ -46,7 +46,7 @@ def init_app():
         api.add_namespace(apex)
         api.add_namespace(gaussian)
         api.add_namespace(gaussian_blur)
-        api.add_namespace(dialation)
+        api.add_namespace(dilation)
         api.add_namespace(threshold)
         api.add_namespace(erosion)
         api.add_namespace(processor)

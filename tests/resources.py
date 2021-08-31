@@ -4,7 +4,7 @@ PROCESSOR_PAYLOAD = {
         "kernel_width": 1,
         "kernel_height": 1
     },
-    "dialation": {
+    "dilation": {
         "iterations": 1,
         "kernel_width": 1,
         "kernel_height": 1

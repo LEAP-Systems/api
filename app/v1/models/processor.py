@@ -10,7 +10,7 @@ import mongoengine as me
 from flask_restx import fields, Namespace
 from datetime import datetime
 
-from app.v1.models.dialation import Dialation, dialation_request_schema, dialation_model
+from app.v1.models.dilation import dilation, dilation_request_schema, dilation_model
 from app.v1.models.threshold import Threshold, threshold_request_schema, threshold_model
 from app.v1.models.erosion import Erosion, erosion_request_schema, erosion_model
 from app.v1.models.gaussian_blur import (
@@ -22,7 +22,7 @@ processor_request_schema = {
     'type': 'object',
     'properties': {
         'gaussian_blur': gaussian_blur_request_schema,
-        'dialation': dialation_request_schema,
+        'dilation': dilation_request_schema,
         'erosion': erosion_request_schema,
         'threshold': threshold_request_schema
     },
@@ -41,9 +41,9 @@ processor_model = api.model(
             erosion_model,
             description="Erosion parameters"
         ),
-        'dialation': fields.Nested(
-            dialation_model,
-            description="Dialation parameters"
+        'dilation': fields.Nested(
+            dilation_model,
+            description="dilation parameters"
         ),
         'threshold': fields.Nested(
             threshold_model,
@@ -61,7 +61,7 @@ class Processor(me.Document):
     created_at = me.StringField(required=True)
     gaussian_blur = me.EmbeddedDocumentField(GaussianBlur)
     erosion = me.EmbeddedDocumentField(Erosion)
-    dialation = me.EmbeddedDocumentField(Dialation)
+    dilation = me.EmbeddedDocumentField(dilation)
     threshold = me.EmbeddedDocumentField(Threshold)
 
     def __repr__(self):
