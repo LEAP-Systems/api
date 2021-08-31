@@ -27,7 +27,7 @@ threshold_request_schema = {
         },
         'type': {
             'type': 'string',
-            'enum': [ThresholdTypes.NORMAL, ThresholdTypes.INVERSE]
+            'enum': ['normal', 'inverse']
         },
     },
     'required': [
