@@ -44,9 +44,6 @@ class ModelsList(Resource):
         img_path = Capture.objects().get(id=capture_id).path  # type: ignore
         app.logger.debug("Recovered image path: %s", img_path)
         img = np.array(Image.open(img_path))
-        processed, gaussian_blur, erosion, dialation, threshold = self.processing_pipeline(
-            img, payload
-        )
         app.logger.debug("Loaded image from file system. Starting processing")
         # perform gaussian curve fit
         start = time.time()
@@ -87,10 +84,7 @@ class ModelsList(Resource):
         # create model
         model = Model(
             capture_id=capture_id,
-            erosion=erosion,
-            dialation=dialation,
-            gaussian_blur=gaussian_blur,
-            threshold=threshold,
+            processor_id=processor_id,
             elapsed=elapsed,
             apexes=apexes
         )
@@ -101,36 +95,6 @@ class ModelsList(Resource):
             return make_response(jsonify(message="Invalid types for models {}".format(exc))), 400
         app.logger.debug("Saved model")
         return model
-
-    @staticmethod
-    def processing_pipeline(img: np.ndarray, payload: dict):
-        # extract optional parameters if any
-        gaussian_blur_params: Optional[dict] = payload.get("gaussian_blur")
-        erosion_params: Optional[dict] = payload.get("erosion")
-        dialation_params: Optional[dict] = payload.get("dialation")
-        threshold_params: Optional[dict] = payload.get("threshold")
-        gaussian_blur = None
-        threshold = None
-        dialation = None
-        erosion = None
-        # perform some kind of processing
-        if gaussian_blur_params:
-            # check for these parameters in the database
-            # TODO: perform check -> if None then create new
-            gaussian_blur = GaussianBlur(kernel_width=5, kernel_height=5).save()
-            app.logger.debug("Saved gb modifier: %s", gaussian_blur)
-            # then perform the job
-            # img = gaussian_blur(img, params)
-        if erosion_params:
-            erosion = Erosion(kernel_width=5, kernel_height=5, iterations=5).save()
-            app.logger.debug("Saved erosion modifier: %s", erosion)
-        if dialation_params:
-            dialation = Dialation(kernel_width=5, kernel_height=5, iterations=5).save()
-            app.logger.debug("Saved dialation modifier: %s", dialation)
-        if threshold_params:
-            threshold = Threshold(threshold=100, output=240, type="normal").save()
-            app.logger.debug("Saved threshold modifier: %s", threshold)
-        return img, gaussian_blur, erosion, dialation, threshold
 
 
 @api.route('/<string:id>')
