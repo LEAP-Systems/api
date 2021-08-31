@@ -40,8 +40,8 @@ model = api.model(
     'Model',
     {
         'id': fields.String(required=True, description="model id"),
-        'capture_id': fields.String(required=True, description="capture id"),
-        'processor_id': fields.String(required=False, description="image processor id"),
+        'capture_id': fields.String(required=True, description="capture"),
+        'processor_id': fields.String(required=False, description="image processor"),
         'created_at': fields.String(required=True, description="model creation timestamp"),
         'elapsed': fields.Float(required=True, description="curve fitting elapsed time"),
         'apexes': fields.List(
@@ -57,7 +57,7 @@ model = api.model(
 
 class Model(me.Document):
     capture_id = me.ReferenceField(Capture, required=True)
-    capture_id = me.ReferenceField(Processor, required=False)
+    processor_id = me.ReferenceField(Processor, required=False)
     created_at = me.StringField(required=True)
     elapsed = me.FloatField(required=True)
     apexes = me.EmbeddedDocumentListField(Apex)
