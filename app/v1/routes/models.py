@@ -7,6 +7,7 @@ Modified: 2021-07
 Copyright © 2021 LEAP. All Rights Reserved.
 """
 
+from app.v1.models.processor import Processor
 import time
 import numpy as np
 from typing import List
@@ -18,7 +19,7 @@ from flask import current_app as app
 from flask_restx import Resource
 from mongoengine.errors import ValidationError
 
-from app.v1.utils import fit
+from app.v1.utils import fit, process
 from app.v1.models.model import Model, api, model, post_model
 from app.v1.models.capture import Capture
 from app.v1.models.apex import Apex
@@ -34,12 +35,15 @@ class ModelsList(Resource):
         payload: dict = request.get_json()
         app.logger.info("Received Payload: %s", payload)
         capture_id: str = payload['capture_id']
+        processor_id: str = payload['processor_id']
         iterations: int = payload['iterations']
         divisor: int = payload['divisor']
         # query db for image path
         img_path = Capture.objects().get(id=capture_id).path  # type: ignore
+        processor: Processor = Processor.objects().get(id=processor_id)  # type: ignore
         app.logger.debug("Recovered image path: %s", img_path)
         img = np.array(Image.open(img_path))
+        processed = process.process(img, processor)
         app.logger.debug("Loaded image from file system. Starting processing")
         # perform gaussian curve fit
         start = time.time()
