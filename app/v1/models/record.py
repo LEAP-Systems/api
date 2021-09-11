@@ -8,7 +8,7 @@ from app.v1.models.apex import model as apex_model
 from app.v1.models.capture import Capture
 from app.v1.models.processor import Processor
 
-api = Namespace('model', description='gaussian curve fitting models')
+api = Namespace('record', description='Imaging records')
 request_schema = {
     'type': 'object',
     'properties': {
@@ -33,11 +33,11 @@ request_schema = {
         'additionalProperties': False
     }
 }
-post_model = api.schema_model('post_request', request_schema)
+post_model = api.schema_model('Record', request_schema)
 
 
 model = api.model(
-    'Model',
+    'Record',
     {
         'id': fields.String(required=True, description="model id"),
         'capture_id': fields.String(required=True, description="capture"),
@@ -55,7 +55,7 @@ model = api.model(
 )
 
 
-class Model(me.Document):
+class Record(me.Document):
     capture_id = me.ReferenceField(Capture, required=True)
     processor_id = me.ReferenceField(Processor, required=False)
     created_at = me.StringField(required=True)

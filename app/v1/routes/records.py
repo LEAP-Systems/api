@@ -20,14 +20,14 @@ from flask_restx import Resource
 from mongoengine.errors import ValidationError
 
 from app.v1.utils import fit, process
-from app.v1.models.model import Model, api, model, post_model
+from app.v1.models.record import Record, api, model, post_model
 from app.v1.models.capture import Capture
 from app.v1.models.apex import Apex
 from app.v1.models.gaussian import GaussianCurve
 
 
 @api.route('')
-class ModelsList(Resource):
+class RecordsList(Resource):
 
     @api.marshal_with(model, code=201)
     @api.expect(post_model, validate=True)
@@ -82,14 +82,14 @@ class ModelsList(Resource):
             )
         app.logger.debug("Creating model")
         # create model
-        model = Model(
+        record = Record(
             capture_id=capture_id,
             processor_id=processor_id,
             elapsed=elapsed,
             apexes=apexes
         )
         try:
-            model.save()
+            record.save()
         except ValidationError as exc:
             app.logger.exception("Model validation failed: %s", exc)
             return make_response(jsonify(message="Invalid types for models {}".format(exc))), 400
@@ -98,13 +98,13 @@ class ModelsList(Resource):
 
 
 @api.route('/<string:id>')
-class Models(Resource):
+class Records(Resource):
 
     @api.marshal_with(model, code=200)
     def get(self, id: str):
         """
-        Get model of a single capture 
+        Get record of a single capture 
         """
         # poll for status completion
-        model = Model.objects.get(id=id)  # type: ignore
-        return model
+        record = Record.objects.get(id=id)  # type: ignore
+        return record

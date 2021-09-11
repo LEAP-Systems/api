@@ -29,7 +29,7 @@ def init_app():
     with app.app_context():
         # Include our Routes
         from app.v1.routes.captures import api as captures
-        from app.v1.routes.models import api as models
+        from app.v1.routes.records import api as records
         from app.v1.routes.processors import api as processors
         # include models
         from app.v1.models.apex import api as apex
@@ -39,10 +39,12 @@ def init_app():
         from app.v1.models.dilation import api as dilation
         from app.v1.models.threshold import api as threshold
         from app.v1.models.processor import api as processor
+        from app.v1.models.record import api as record
         app.register_blueprint(bp)
         # add resource endpoints
         api.add_namespace(captures)
-        api.add_namespace(models)
+        api.add_namespace(record)
+        api.add_namespace(records)
         api.add_namespace(apex)
         api.add_namespace(gaussian)
         api.add_namespace(gaussian_blur)
