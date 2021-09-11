@@ -10,10 +10,10 @@ from flask_mongoengine import MongoEngine
 db = MongoEngine()
 
 
-def init_app():
+def init_app(config:object):
     """Initialize the core application"""
     app = Flask(__name__, instance_relative_config=False)
-    app.config.from_object('config.Config')
+    app.config.from_object(config)
     bp = Blueprint("api", __name__, url_prefix="/v1")
     api = Api(
         bp,
@@ -24,7 +24,7 @@ def init_app():
     )
     # create storage directory
     os.makedirs(app.config['STORAGE_PATH'], exist_ok=True)
-    # Initialize Plugins
+    # Initialize db plugin 
     db.init_app(app)
     with app.app_context():
         # Include our Routes
