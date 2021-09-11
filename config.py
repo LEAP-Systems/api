@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
+import tempfile
 from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv(str(Path(__file__).parent.joinpath('.env')))
-
 
 class Config:
     """Set Flask configuration from .env file."""
@@ -20,8 +20,19 @@ class Config:
         'username': os.environ['MONGO_USER'],
         'password': os.environ['MONGO_PASS']
     }
-    # MONGO_URI = os.environ.get('MONGO_URI')
     RESTX_MASK_SWAGGER = False
-
     # storage path config
     STORAGE_PATH = os.environ.get('STORAGE_PATH')
+
+class TestConfig:
+    """Set Flask testing environment."""
+    db_fd, db_path = tempfile.mkstemp()
+    # General config
+    ENV = "development"
+    DEBUG = True
+    TESTING = True
+    # db conf
+    MONGO_URI="mongomock://localhost"
+    RESTX_MASK_SWAGGER = False
+    # storage path config
+    STORAGE_PATH = db_path
