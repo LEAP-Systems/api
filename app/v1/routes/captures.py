@@ -16,6 +16,7 @@ from flask_restx import Resource
 from mongoengine.errors import ValidationError
 from werkzeug.datastructures import FileStorage
 from app.v1.models.capture import Capture, api, model, post_model
+from app.logs.formatter import pformat
 
 
 @api.route('')
@@ -37,7 +38,7 @@ class CapturesList(Resource):
         """
         # process payload args
         args = post_model.parse_args(strict=True)
-        app.logger.debug("args: %s", args)
+        app.logger.debug("args: %s", pformat(args))
         img: FileStorage = args["file"]
         app.logger.debug("Received upload: %s", img)
         # save png to disk (uuid for file collision avoidance)
