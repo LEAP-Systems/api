@@ -33,7 +33,7 @@ request_schema = {
         'additionalProperties': False
     }
 }
-post_model = api.schema_model('Record', request_schema)
+post_model = api.schema_model('Record Post Model', request_schema)
 
 
 model = api.model(
