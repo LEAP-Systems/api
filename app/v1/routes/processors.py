@@ -12,6 +12,7 @@ from flask.helpers import make_response
 from flask.json import jsonify
 
 from mongoengine.errors import ValidationError
+from app.logs.formatter import pformat
 from app.v1.models.threshold import Threshold
 from app.v1.models.dilation import Dilation
 from app.v1.models.erosion import Erosion
@@ -40,7 +41,7 @@ class ProcessorList(Resource):
         Post new processor
         """
         payload: dict = request.get_json()
-        app.logger.info("Received Payload: %s", payload)
+        app.logger.info("Received Payload: %s", pformat(payload))
         # extract optional parameters if any
         gaussian_blur_params: Optional[dict] = payload.get("gaussian_blur")
         erosion_params: Optional[dict] = payload.get("erosion")

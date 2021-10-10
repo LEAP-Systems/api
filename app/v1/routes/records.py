@@ -19,6 +19,7 @@ from flask import current_app as app
 from flask_restx import Resource
 from mongoengine.errors import ValidationError
 
+from app.logs.formatter import pformat
 from app.v1.utils import fit, process
 from app.v1.models.record import Record, api, model, post_model
 from app.v1.models.capture import Capture
@@ -33,7 +34,7 @@ class RecordsList(Resource):
     @api.expect(post_model, validate=True)
     def post(self):
         payload: dict = request.get_json()
-        app.logger.info("Received Payload: %s", payload)
+        app.logger.info("Received Payload: %s", pformat(payload))
         capture_id: str = payload['capture_id']
         processor_id: str = payload['processor_id']
         iterations: int = payload['iterations']
@@ -80,7 +81,7 @@ class RecordsList(Resource):
                     )
                 )
             )
-        app.logger.debug("Creating model")
+        app.logger.debug("Creating record")
         # create model
         record = Record(
             capture_id=capture_id,
@@ -91,10 +92,10 @@ class RecordsList(Resource):
         try:
             record.save()
         except ValidationError as exc:
-            app.logger.exception("Model validation failed: %s", exc)
+            app.logger.exception("Record validation failed: %s", exc)
             return make_response(jsonify(message="Invalid types for models {}".format(exc))), 400
         app.logger.debug("Saved model")
-        return model
+        return record
 
 
 @api.route('/<string:id>')
