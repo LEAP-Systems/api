@@ -14,8 +14,13 @@ request_schema = {
     'properties': {
         'capture_id': {
             'type': 'string',
-            "minLength": 24,
-            "maxLength": 24
+            'minLength': 24,
+            'maxLength': 24
+        },
+        'processor_id': {
+            'type': 'string',
+            'minLength': 24,
+            'maxLength': 24
         },
         'iterations': {
             'type': 'integer',
@@ -24,14 +29,15 @@ request_schema = {
         'divisor': {
             'type': 'integer',
             'minimum': 1
-        },
-        'required': [
-            'capture_id',
-            'iterations',
-            'divisor'
-        ],
-        'additionalProperties': False
-    }
+        }
+    },
+    'required': [
+        'capture_id',
+        'processor_id',
+        'iterations',
+        'divisor'
+    ],
+    'additionalProperties': False
 }
 post_model = api.schema_model('Record Post Model', request_schema)
 
