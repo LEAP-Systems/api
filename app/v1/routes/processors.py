@@ -28,7 +28,7 @@ class ProcessorList(Resource):
     @api.marshal_with(processor_model, as_list=True, code=200)
     def get(self) -> list:
         """
-        Get list of captures
+        Get list of processors 
         """
         procesor_list = Processor.objects()  # type: ignore
         return list(procesor_list)
@@ -36,6 +36,9 @@ class ProcessorList(Resource):
     @api.marshal_with(processor_model, code=200)
     @api.expect(processor_post_model, validate=True)
     def post(self):
+        """
+        Post new processor
+        """
         payload: dict = request.get_json()
         app.logger.info("Received Payload: %s", payload)
         # extract optional parameters if any
@@ -95,7 +98,7 @@ class Processors(Resource):
 
     def delete(self, id: str):
         """
-        Delete a single capture
+        Delete a single processor
         """
         Processor.objects.get(id=id).delete()  # type: ignore
         return '', 204
