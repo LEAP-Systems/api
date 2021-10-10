@@ -49,3 +49,51 @@ Computationally expensive and heavy processing libraries remain on the server si
    4. run through trained ecp network
    5. apply spatial codec
    6. read data
+
+## Image Processing Endpoints and Queries
+
+`POST /v1/model`
+Records modelling input parameters:
+```py
+{
+   "divisor": 2,
+   "iterations": 5000,
+   "capture_id": "u43o42043247204",
+   "processing_id": "eywuiqeuqguibe"
+}
+```
+
+`POST /v1/captures`
+Records raw image as a file.
+`GET /v1/captures?processor={processor_id}`
+Get all raw images as a file applying the processor to all images
+`GET /v1/captures/{capture_id}/?processor={processor_id}`
+Get specified image as a file applying the processor
+
+### Processors
+Processors are records of image processing parameters applied to an image. Processors are bound to a capture resource in a `capture` and `model` resource to recreate an image record to specification. This endpoint should be easy to scale to support new image processing features. All image processing techniques should be optional however we should require a single technique specification in a post request.
+
+`GET /v1/processors`
+Get parameters of all image processing records -> [{...},...]
+`GET /v1/processors/{processors_id}`
+Get parameters of a single processor instance -> {...}
+`POST /v1/processors`
+Create a new image processor record
+```py
+{
+   "gaussian_blur": {
+      "kernel_width": 3,
+      "kernel_height": 3
+   },
+   "dilation": {
+      "kernel_width": 3,
+      "kernel_height": 3,
+      "iterations": 20
+   }, 
+   "erosion": {
+      "kernel_width": 3,
+      "kernel_height": 3,
+      "iterations": 20
+   },
+}
+```

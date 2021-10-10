@@ -2,7 +2,9 @@
 import mongoengine as me
 from flask_restx import fields, Namespace
 
-erosion_request_schema = {
+api = Namespace('dilation', description='Image dilation')
+
+dilation_request_schema = {
     'type': 'object',
     'properties': {
         'iterations': {
@@ -27,19 +29,17 @@ erosion_request_schema = {
     ],
 }
 
-
-api = Namespace('erosion', description='Image erosion')
-erosion_model = api.model(
-    'Erosion',
+dilation_model = api.model(
+    'dilation',
     {
-        'iterations': fields.Integer(required=True, min=1, description="erosion iterations"),
+        'iterations': fields.Integer(required=True, min=1, description="dilation iterations"),
         'kernel_width': fields.Integer(required=True, min=1, description="kernel width"),
         'kernel_height': fields.Integer(required=True, min=1, description="kernel height"),
     }
 )
 
 
-class Erosion(me.EmbeddedDocument):
+class Dilation(me.EmbeddedDocument):
 
     iterations = me.IntField(required=True, min_value=1)
     # kernel shape must be odd numbers

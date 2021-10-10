@@ -6,7 +6,7 @@
         "kernel_width": 5,
         "kernel_height": 5
     },
-    "dialation": {
+    "dilation": {
         "kernel_width": 5,
         "kernel_height": 5,
         "iterations": 4

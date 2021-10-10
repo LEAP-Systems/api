@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from app import init_app
 from flask import jsonify, redirect, url_for
+from config import Config
 
-app = init_app()
+app = init_app(Config)
 
 
 @app.errorhandler(404)

@@ -7,7 +7,7 @@
   "threshold": null,
   "gaussian_blur": null,
   "erosion_iterations": null,
-  "dialation_iterations": null,
+  "dilation_iterations": null,
   "boxes": [
     {
       "tl_x": 10,
