@@ -38,9 +38,8 @@ class CapturesList(Resource):
         """
         # process payload args
         args = post_model.parse_args(strict=True)
-        app.logger.debug("args: %s", pformat(args))
+        app.logger.debug("args: %s", args)
         img: FileStorage = args["file"]
-        app.logger.debug("Received upload: %s", img)
         # save png to disk (uuid for file collision avoidance)
         img_path = "{}/{}.png".format(app.config.get("STORAGE_PATH"), uuid.uuid4().hex)
         app.logger.debug("Constucted image path: %s", img_path)
