@@ -12,6 +12,9 @@ def resource_not_found(err):
 
 @app.errorhandler(Exception)
 def internal_error(err):
+    # log the exception stack trace
+    app.logger.exception(err)
+    # create hr error message for response payload
     message = [str(x) for x in err.args]
     response = {
         'success': False,
