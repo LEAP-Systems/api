@@ -16,7 +16,6 @@ from flask_restx import Resource
 from mongoengine.errors import ValidationError
 from werkzeug.datastructures import FileStorage
 from app.v1.models.capture import Capture, api, model, post_model
-from app.logs.formatter import pformat
 
 
 @api.route('')
