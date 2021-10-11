@@ -52,6 +52,7 @@ class ProcessorList(Resource):
                 kernel_width=gaussian_blur_params.get('kernel_width'),
                 kernel_height=gaussian_blur_params.get('kernel_height')
             )
+            payload["gaussian_blur"] = gaussian_blur
             app.logger.debug("Saved gaussian blur modifier: %s", gaussian_blur)
         if erosion_params:
             erosion = Erosion(
@@ -59,6 +60,7 @@ class ProcessorList(Resource):
                 kernel_height=erosion_params.get('kernel_height'),
                 iterations=erosion_params.get('iterations')
             )
+            payload["erosion"] = erosion
             app.logger.debug("Saved erosion modifier: %s", erosion)
         if dilation_params:
             dilation = Dilation(
@@ -66,6 +68,7 @@ class ProcessorList(Resource):
                 kernel_height=dilation_params.get('kernel_height'),
                 iterations=dilation_params.get('iterations')
             )
+            payload["dilation"] = dilation
             app.logger.debug("Saved dilation modifier: %s", dilation)
         if threshold_params:
             threshold = Threshold(
@@ -73,6 +76,7 @@ class ProcessorList(Resource):
                 output=threshold_params.get('output'),
                 type=threshold_params.get('type')
             )
+            payload["threshold"] = threshold
             app.logger.debug("Saved threshold modifier: %s", threshold)
         processor = Processor(**payload)
         try:
