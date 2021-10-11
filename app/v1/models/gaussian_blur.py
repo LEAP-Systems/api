@@ -9,11 +9,13 @@ gaussian_blur_request_schema = {
         'kernel_width': {
             'type': 'integer',
             'minimum': 1,
+            'example': 5,
             'not': {'multipleOf': 2}
         },
         'kernel_height': {
             'type': 'integer',
             'minimum': 1,
+            'example': 5,
             'not': {'multipleOf': 2}
         },
     },

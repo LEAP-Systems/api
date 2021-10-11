@@ -2,6 +2,7 @@
 import mongoengine as me
 from flask_restx import fields, Namespace
 from datetime import datetime
+import uuid
 
 from app.v1.models.apex import Apex
 from app.v1.models.apex import model as apex_model
@@ -14,21 +15,25 @@ request_schema = {
     'properties': {
         'capture_id': {
             'type': 'string',
+            'example': uuid.uuid4().hex,
             'minLength': 24,
             'maxLength': 24
         },
         'processor_id': {
             'type': 'string',
+            'example': uuid.uuid4().hex,
             'minLength': 24,
             'maxLength': 24
         },
         'iterations': {
             'type': 'integer',
-            'minimum': 1
+            'minimum': 1,
+            'example': 2
         },
         'divisor': {
             'type': 'integer',
-            'minimum': 1
+            'minimum': 1,
+            'example': 2
         }
     },
     'required': [
@@ -39,7 +44,7 @@ request_schema = {
     ],
     'additionalProperties': False
 }
-post_model = api.schema_model('Record Post Model', request_schema)
+post_model = api.schema_model('Record_Post_Model', request_schema)
 
 
 model = api.model(

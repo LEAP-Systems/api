@@ -9,15 +9,18 @@ dilation_request_schema = {
     'properties': {
         'iterations': {
             'type': 'integer',
+            'example': 5,
             'minimum': 1
         },
         'kernel_width': {
             'type': 'integer',
+            'example': 5,
             'minimum': 1,
             'not': {'multipleOf': 2}
         },
         'kernel_height': {
             'type': 'integer',
+            'example': 5,
             'minimum': 1,
             'not': {'multipleOf': 2}
         },

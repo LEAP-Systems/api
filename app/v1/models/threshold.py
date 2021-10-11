@@ -16,16 +16,19 @@ threshold_request_schema = {
     'properties': {
         'threshold': {
             'type': 'integer',
+            'example': 50,
             'minimum': 0,
             'maximum': 255
         },
         'output': {
             'type': 'integer',
+            'example': 255,
             'minimum': 0,
             'maximum': 255
         },
         'type': {
             'type': 'string',
+            'example': 'normal',
             'enum': ['normal', 'inverse']
         },
     },
